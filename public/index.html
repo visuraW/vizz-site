@@ -18,7 +18,7 @@
 
 :root{--bg:#fff;--ink:#111;--muted:#6b6b6b;--line:#e6e6e6;--tile:#f1f1f1;--gutter:clamp(16px,3vw,40px)}
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;scroll-padding-top:110px} /* jump links land below the sticky header */
 body{margin:0;background:var(--bg);color:var(--ink);font:400 20px/1.35 "Instrument Serif",Georgia,"Times New Roman",serif;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
 button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
@@ -26,7 +26,7 @@ img,iframe{display:block;width:100%}
 :focus-visible{outline:2px solid var(--ink);outline-offset:4px}
 
 /* header */
-.top{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:clamp(16px,2.4vw,32px) var(--gutter) 0}
+.top{position:sticky;top:0;z-index:20;background:var(--bg);display:flex;align-items:center;justify-content:space-between;gap:24px;padding:clamp(14px,2vw,26px) var(--gutter)} /* stays at the top while scrolling */
 .top>a{display:block;margin-left:-8px}
 .name{display:block;height:clamp(36px,3.6vw,46px);width:auto}
 .name text{font:900 220px Name,Arial Black,sans-serif;letter-spacing:-4px}
@@ -35,7 +35,7 @@ nav a{border-bottom:1px solid transparent}
 nav a:hover{border-color:currentColor}
 
 /* work grid: rows of mixed widths that always add up to 100% (wide+regular, narrow+narrow+regular) */
-.work{padding:clamp(20px,3vw,48px) var(--gutter) 0}
+.work{padding:clamp(4px,1vw,20px) var(--gutter) 0}
 .grid{container-type:inline-size;display:flex;flex-wrap:wrap;margin:0 -6px}
 .tile{flex:0 0 43.716%;padding:6px;text-align:left;min-width:0}
 .tile.wide{flex-basis:56.284%}
@@ -319,9 +319,12 @@ const LAYOUT = [
   ["themembersonly/02"], ["the-arrival/01"],
   ["the-weekend-calling/02"], ["the-weekend-calling/03"], ["moku-games/01"],
   ["avantis/01", "narrow"], ["do-you-feel-it/01", "regular"], ["avantis/02", "narrow"],
+  ["ilovebrunch/02"], ["ilovebrunch/03", "narrow"], ["beacon-defi/01", "narrow"],
+  ["capx-ai/01", "narrow"], ["ilovebrunch/01", "narrow"], ["avantis/03", "regular"],
+  ["avantis/04", "narrow"], ["base-app/01", "regular"], ["zora/01", "narrow"],
 ];
 // These go to the very end of the grid.
-const LAST = ["ilovebrunch/01"];
+const LAST = [];
 const key = (p, i) => `${slug(p)}/${pad(i + 1)}`;
 const all = projects.flatMap(p => p.empty ? [{ p }] : p.videos.map((v, i) => ({ p, v, i, size: v.size })));
 const first = LAYOUT.map(([k, size]) => ({ ...all.find(t => t.v && key(t.p, t.i) === k), size }));
