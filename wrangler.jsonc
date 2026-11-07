@@ -1,0 +1,8 @@
+// Cloudflare Workers config: serve this folder as a static site.
+{
+  "name": "vizz",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": "./public"
+  }
+}
