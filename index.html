@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VIZZ — AI video commercials</title>
+<meta name="description" content="VIZZ — AI video commercials, brand films and motion. Based in Colombo, Sri Lanka.">
+<meta name="theme-color" content="#ffffff">
+<link rel="preload" href="fonts/rubik-latin-900-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/instrument-serif-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+/* Placeholder name font until the final one arrives; the thermal look comes from the SVG filter, not the font. */
+@font-face{font-family:Name;src:url(fonts/rubik-latin-900-normal.woff2) format("woff2");font-weight:900;font-display:block}
+@font-face{font-family:"Instrument Serif";src:url(fonts/instrument-serif-latin-400-normal.woff2) format("woff2");font-display:swap}
+
+:root{--bg:#fff;--ink:#111;--muted:#6b6b6b;--line:#e6e6e6;--tile:#f1f1f1;--gutter:clamp(16px,3vw,40px)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 20px/1.35 "Instrument Serif",Georgia,"Times New Roman",serif;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+img,iframe{display:block;width:100%}
+:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
+
+/* header */
+.top{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:clamp(16px,2.4vw,32px) var(--gutter) 0}
+.top>a{display:block;margin-left:-8px}
+.name{display:block;height:clamp(36px,3.6vw,46px);width:auto}
+.name text{font:900 220px Name,Arial Black,sans-serif;letter-spacing:-4px}
+nav{display:flex;gap:clamp(18px,2.4vw,32px);font-size:clamp(21px,2vw,27px)}
+nav a{border-bottom:1px solid transparent}
+nav a:hover{border-color:currentColor}
+
+/* work grid */
+.work{padding:clamp(20px,3vw,48px) var(--gutter) 0}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.tile{position:relative;aspect-ratio:16/9;overflow:hidden;background:var(--tile);text-align:left;width:100%}
+.tile img{height:100%;object-fit:cover}
+.tile .cap{position:absolute;left:16px;top:12px;right:16px;color:#fff;font-size:clamp(22px,2.4vw,34px);line-height:1.1;z-index:2}
+.tile .cap small{display:block;font-size:.6em;opacity:.9;margin-top:4px}
+.tile .shade{position:absolute;inset:0;background:linear-gradient(180deg,#0006,#0000 45%,#0005);z-index:1}
+.tile .play{position:absolute;left:16px;bottom:14px;color:#fff;font-size:20px;opacity:0;transition:opacity .2s;z-index:2}
+.tile:hover .play,.tile:focus-visible .play{opacity:1}
+.tile.empty{cursor:default}
+.tile.empty .cap{color:var(--muted)}
+.tile.empty .shade{display:none}
+
+/* inquiries */
+.inq{margin:clamp(64px,10vw,140px) var(--gutter) 0;border-top:1px solid var(--line);padding-top:28px;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:32px}
+.inq h2{font-weight:400;font-size:clamp(40px,5.5vw,76px);line-height:1;margin:0;letter-spacing:-.01em}
+.inq ul{list-style:none;margin:0;padding:0;display:grid;gap:10px;align-content:start}
+.inq li{display:grid;grid-template-columns:120px 1fr;gap:16px;align-items:baseline}
+.inq li span{color:var(--muted);font-size:16px}
+.inq li a{border-bottom:1px solid var(--line)}
+.inq li a:hover{border-color:currentColor}
+
+footer{display:flex;justify-content:space-between;padding:56px var(--gutter) 32px;font-size:15px;color:var(--muted)}
+
+/* project viewer */
+dialog{border:0;padding:0;margin:0;width:100%;max-width:none;height:100%;max-height:none;background:var(--bg);color:var(--ink)}
+dialog::backdrop{background:var(--bg)}
+.view{max-width:1280px;margin:0 auto;padding:var(--gutter)}
+.view-top{display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-bottom:20px}
+.view-top h2{font-weight:400;font-size:clamp(30px,4vw,52px);margin:0;line-height:1}
+.close{font-size:22px}
+.close:hover{text-decoration:underline}
+.player{aspect-ratio:16/9;background:#000}
+.player iframe{height:100%;border:0}
+.cuts{display:flex;gap:6px;margin-top:14px;flex-wrap:wrap}
+.cuts button{padding:4px 12px;border:1px solid var(--line);font-size:18px}
+.cuts button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.meta{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:32px;margin-top:28px}
+.meta p{margin:0;max-width:52ch}
+.meta dl{margin:0;display:grid;grid-template-columns:90px 1fr;gap:6px 16px;font-size:18px}
+.meta dt{color:var(--muted)}
+.meta dd{margin:0}
+
+@media (max-width:760px){
+  .grid{grid-template-columns:minmax(0,1fr)}
+  .inq,.meta{grid-template-columns:minmax(0,1fr)}
+  .tile .play{opacity:1}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <a href="/" aria-label="VIZZ home">
+    <svg class="name" viewBox="0 0 580 206" role="img" aria-labelledby="name-t">
+      <title id="name-t">VIZZ</title>
+      <defs>
+        <!-- Thermal text: the blurred letters give a heat value (hot core, cool edge), a slowly
+             morphing noise field moves hot spots around inside, and a lookup table maps heat to
+             the thermal palette (pink edge → red → orange → yellow → green → cyan → blue → navy). -->
+        <filter id="thermal" filterUnits="userSpaceOnUse" x="0" y="0" width="580" height="206" color-interpolation-filters="sRGB">
+          <feGaussianBlur in="SourceAlpha" stdDeviation="7" result="blur"/>
+          <feColorMatrix in="blur" type="matrix" values="0 0 0 1 0  0 0 0 1 0  0 0 0 1 0  0 0 0 0 1" result="heat"/>
+          <feTurbulence type="fractalNoise" baseFrequency="0.006 0.009" numOctaves="1" seed="7">
+            <animate attributeName="baseFrequency" dur="8s" values="0.005 0.009;0.01 0.005;0.006 0.012;0.005 0.009" repeatCount="indefinite"/>
+          </feTurbulence>
+          <feColorMatrix type="matrix" values="2.2 0 0 0 -.6  2.2 0 0 0 -.6  2.2 0 0 0 -.6  0 0 0 0 1" result="noise"/>
+          <feComposite in="heat" in2="noise" operator="arithmetic" k1=".85" k2=".3" k3="0" k4="0"/>
+          <feComponentTransfer result="color">
+            <feFuncR type="table" tableValues="1 1 1 1 1 .275 .133 .165 .106 .051 .024"/>
+            <feFuncG type="table" tableValues=".604 .31 .353 .624 .882 .878 .78 .482 .247 .122 .043"/>
+            <feFuncB type="table" tableValues=".835 .639 .212 .11 .302 .478 .941 1 .839 .561 .302"/>
+          </feComponentTransfer>
+          <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 4 0" result="mask"/>
+          <feComposite in="color" in2="mask" operator="in"/>
+        </filter>
+      </defs>
+      <text x="26" y="180" filter="url(#thermal)">VIZZ</text>
+    </svg>
+  </a>
+  <nav aria-label="Main">
+    <a href="#work">Work</a>
+    <a href="#inquiries">Inquiries</a>
+  </nav>
+</header>
+
+<main>
+  <section class="work" id="work" aria-label="Work">
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <section class="inq" id="inquiries" aria-labelledby="inq-h">
+    <h2 id="inq-h">Let’s make<br>something.</h2>
+    <ul>
+      <li><span>Email</span><a href="mailto:hello@example.com">hello@example.com</a></li>
+      <li><span>WhatsApp</span><a href="https://wa.me/94700000000">+94 70 000 0000</a></li>
+      <li><span>Instagram</span><a href="https://instagram.com/">@vizz</a></li>
+      <li><span>Based in</span>Colombo, Sri Lanka</li>
+    </ul>
+  </section>
+</main>
+
+<footer><span>© <span id="yr">2026</span> VIZZ</span><a href="#work">Back to top ↑</a></footer>
+
+<dialog id="viewer" aria-labelledby="v-title">
+  <div class="view">
+    <div class="view-top"><h2 id="v-title"></h2><button class="close" id="v-close">Close ×</button></div>
+    <div class="player" id="v-player"></div>
+    <div class="cuts" id="v-cuts" role="group" aria-label="Videos in this project"></div>
+    <div class="meta"><p id="v-about"></p><dl id="v-facts"></dl></div>
+  </div>
+</dialog>
+
+<script>
+// Add work here. Each project can hold several videos, labelled No. 01, No. 02, ...
+// Videos 02 and 03 reuse the one real link until the other two arrive.
+const projects = [
+  {
+    title: "Magical Sky",
+    client: "Magical Sky",
+    type: "AI commercial",
+    year: "2026",
+    about: "Placeholder text: two or three sentences about the brief and the idea go here.",
+    videos: ["1239257105", "1239257105", "1239257105"],
+    cover: "https://i.vimeocdn.com/video/2216702772-53aa5ae5f13e1f8fd5a39f2cce952fcb2d09a0da30b0521ec4d8ca2ad8b6b894-d_1280",
+  },
+  { title: "Project title", empty: true },
+  { title: "Project title", empty: true },
+  { title: "Project title", empty: true },
+];
+
+const pad = n => String(n).padStart(2, "0");
+
+const grid = document.getElementById("grid");
+projects.forEach((p, i) => {
+  const b = document.createElement("button");
+  b.className = "tile" + (p.empty ? " empty" : "");
+  if (p.empty) {
+    b.disabled = true;
+    b.innerHTML = `<span class="cap">${p.title}<small>Placeholder</small></span>`;
+  } else {
+    const n = p.videos.length;
+    b.innerHTML = `
+      <img src="${p.cover}" alt="" onerror="this.remove()" loading="${i < 2 ? "eager" : "lazy"}" decoding="async">
+      <span class="shade"></span>
+      <span class="cap">${p.title}<small>${n > 1 ? `No. 01–${pad(n)}` : p.type}</small></span>
+      <span class="play">▶ Play</span>`;
+    b.addEventListener("click", () => openProject(p));
+  }
+  grid.appendChild(b);
+});
+
+const dlg = document.getElementById("viewer");
+const player = document.getElementById("v-player");
+const cuts = document.getElementById("v-cuts");
+
+function play(id) {
+  player.innerHTML = `<iframe src="https://player.vimeo.com/video/${id}?autoplay=1&title=0&byline=0&portrait=0&dnt=1"
+    allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="Video player"></iframe>`;
+}
+
+function openProject(p) {
+  document.getElementById("v-title").textContent = p.title;
+  document.getElementById("v-about").textContent = p.about;
+  document.getElementById("v-facts").innerHTML =
+    `<dt>Client</dt><dd>${p.client}</dd><dt>Type</dt><dd>${p.type}</dd><dt>Year</dt><dd>${p.year}</dd>`;
+  cuts.innerHTML = "";
+  if (p.videos.length > 1) {
+    p.videos.forEach((id, i) => {
+      const c = document.createElement("button");
+      c.textContent = `No. ${pad(i + 1)}`;
+      c.setAttribute("aria-pressed", i === 0);
+      c.addEventListener("click", () => {
+        cuts.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === c));
+        play(id);
+      });
+      cuts.appendChild(c);
+    });
+  }
+  play(p.videos[0]);
+  dlg.showModal();
+}
+
+// Stop the video when the viewer closes.
+dlg.addEventListener("close", () => { player.innerHTML = ""; });
+document.getElementById("v-close").addEventListener("click", () => dlg.close());
+
+// Respect reduced-motion settings: freeze the thermal animation.
+if (matchMedia("(prefers-reduced-motion: reduce)").matches) document.querySelector(".name").pauseAnimations();
+
+document.getElementById("yr").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
