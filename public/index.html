@@ -238,21 +238,21 @@ const projects = [
     brand: "Beacon DeFi",
     type: "AI commercial",
     year: "2025",
-    videos: [{ id: "1139157218", cover: "covers/beacon-defi.webp", size: "square" }],
+    videos: [{ id: "1139157218", cover: "covers/beacon-defi.webp" }],
   },
   {
     title: "CapX AI",
     brand: "CapX AI",
     type: "AI commercial",
     year: "2025",
-    videos: [{ id: "1148315290", cover: "covers/capx-ai.webp", size: "square" }],
+    videos: [{ id: "1148315290", cover: "covers/capx-ai.webp" }],
   },
   {
     title: "PistachioFi",
     brand: "PistachioFi",
     type: "AI commercial",
     year: "2025",
-    videos: [{ id: "1140256359", cover: "covers/pistachiofi.webp", size: "half" }],
+    videos: [{ id: "1140256359", cover: "covers/pistachiofi.webp" }],
   },
   {
     title: "Avantis",
@@ -270,14 +270,14 @@ const projects = [
     brand: "Base App",
     type: "AI commercial",
     year: "2026",
-    videos: [{ id: "1167796975", cover: "covers/base-app.webp", size: "narrow" }],
+    videos: [{ id: "1167796975", cover: "covers/base-app.webp" }],
   },
   {
     title: "Zora",
     brand: "Zora",
     type: "AI commercial",
     year: "2026",
-    videos: [{ id: "1167803758", cover: "covers/zora.webp", size: "regular" }],
+    videos: [{ id: "1167803758", cover: "covers/zora.webp" }],
   },
   {
     title: "Moku Games",
@@ -289,7 +289,7 @@ const projects = [
 ];
 
 // Tile widths repeat in this order; each row adds up to the full width.
-// A video can set its own size ("wide", "narrow", "square", "half") to override the pattern.
+// LAYOUT (below) can give a tile its own size ("wide", "narrow", "square", "half").
 const SIZES = ["wide", "", "narrow", "narrow", "", "", "wide", "", "narrow", "narrow"];
 const PLAY = `<svg class="pi" viewBox="0 0 11 13" aria-hidden="true"><path d="M0 0v13l11-6.5z"/></svg>`;
 
@@ -305,10 +305,21 @@ function cover(v) {
 }
 
 const grid = document.getElementById("grid");
-const tiles = projects.flatMap(p => p.empty ? [{ p }] : p.videos.map((v, i) => ({ p, v, i })));
-tiles.forEach(({ p, v, i }, n) => {
+// Homepage order: these videos come first, in this order, with an optional tile size.
+// Every video not listed follows in the order of the projects list above.
+const LAYOUT = [
+  ["magical-sky/01"], ["magical-sky/02"],
+  ["the-arrival/02", "half"], ["do-you-feel-it/01", "square"], ["themembersonly/01", "square"],
+  ["base-batches-002/01"], ["newschoolcommunity/01"],
+  ["pistachiofi/01", "wide"], ["the-weekend-calling/01", "regular"],
+];
+const key = (p, i) => `${slug(p)}/${pad(i + 1)}`;
+const all = projects.flatMap(p => p.empty ? [{ p }] : p.videos.map((v, i) => ({ p, v, i, size: v.size })));
+const first = LAYOUT.map(([k, size]) => ({ ...all.find(t => t.v && key(t.p, t.i) === k), size }));
+const tiles = [...first, ...all.filter(t => !first.some(f => f.p === t.p && f.i === t.i))];
+tiles.forEach(({ p, v, i, size }, n) => {
   const b = document.createElement("button");
-  b.className = ["tile", (v && v.size) || SIZES[n % SIZES.length], p.empty && "empty"].filter(Boolean).join(" ");
+  b.className = ["tile", size || SIZES[n % SIZES.length], p.empty && "empty"].filter(Boolean).join(" ");
   if (p.empty) {
     b.disabled = true;
     b.innerHTML = `<span class="in"><span class="cap">${p.title}<small>Placeholder</small></span></span>`;
