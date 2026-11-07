@@ -160,6 +160,7 @@ dialog::backdrop{background:var(--bg)}
 <script>
 // Add work here. Every video gets its own tile on the homepage; inside the viewer, a project's
 // videos are labelled No. 01, No. 02, ... A video without a "cover" uses its Vimeo thumbnail.
+// Work made for a brand through another company uses "brand" instead of "client".
 const projects = [
   {
     title: "Magical Sky",
@@ -222,6 +223,33 @@ const projects = [
       { id: "1237339259", cover: "covers/ilovebrunch-01.webp" },
       { id: "1237337468", cover: "covers/ilovebrunch-02.webp" },
     ],
+  },  {
+    title: "Base Batches 002",
+    brand: "Base Batches 002",
+    type: "Event film",
+    year: "2025",
+    videos: [{ id: "1139007779", cover: "covers/base-batches-002.webp" }],
+  },
+  {
+    title: "Beacon DeFi",
+    brand: "Beacon DeFi",
+    type: "AI commercial",
+    year: "2025",
+    videos: [{ id: "1139157218", cover: "covers/beacon-defi.webp" }],
+  },
+  {
+    title: "CapX AI",
+    brand: "CapX AI",
+    type: "AI commercial",
+    year: "2025",
+    videos: [{ id: "1148315290", cover: "covers/capx-ai.webp" }],
+  },
+  {
+    title: "PistachioFi",
+    brand: "PistachioFi",
+    type: "AI commercial",
+    year: "2025",
+    videos: [{ id: "1140256359", cover: "covers/pistachiofi.webp" }],
   },
 ];
 
@@ -295,7 +323,8 @@ player.addEventListener("click", e => {
 function openProject(p, i, push) {
   document.getElementById("v-title").textContent = p.title;
   document.getElementById("v-facts").innerHTML =
-    `<dt>Client</dt><dd>${p.client}</dd><dt>Type</dt><dd>${p.type}</dd><dt>Year</dt><dd>${p.year}</dd>`;
+    (p.brand ? `<dt>Brand</dt><dd>${p.brand}</dd>` : `<dt>Client</dt><dd>${p.client}</dd>`) +
+    `<dt>Type</dt><dd>${p.type}</dd><dt>Year</dt><dd>${p.year}</dd>`;
   cuts.innerHTML = "";
   if (p.videos.length > 1) {
     p.videos.forEach((_, k) => {
