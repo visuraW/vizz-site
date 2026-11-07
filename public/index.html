@@ -47,7 +47,7 @@ nav a:hover{border-color:currentColor}
 
 /* inquiries */
 .inq{margin:clamp(64px,10vw,140px) var(--gutter) 0;border-top:1px solid var(--line);padding-top:28px;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:32px}
-.inq h2{font-weight:400;font-size:clamp(40px,5.5vw,76px);line-height:1;margin:0;letter-spacing:-.01em}
+.inq h2{font-weight:400;font-size:clamp(34px,4.4vw,62px);line-height:1;margin:0;letter-spacing:-.01em}
 .inq ul{list-style:none;margin:0;padding:0;display:grid;gap:10px;align-content:start}
 .inq li{display:grid;grid-template-columns:120px 1fr;gap:16px;align-items:baseline}
 .inq li span{color:var(--muted);font-size:16px}
@@ -124,11 +124,10 @@ dialog::backdrop{background:var(--bg)}
   </section>
 
   <section class="inq" id="inquiries" aria-labelledby="inq-h">
-    <h2 id="inq-h">Let’s make<br>something.</h2>
+    <h2 id="inq-h">There’s music in the air.<br>It doesn’t stay long.</h2>
     <ul>
       <li><span>Email</span><a href="mailto:hello@example.com">hello@example.com</a></li>
       <li><span>WhatsApp</span><a href="https://wa.me/94700000000">+94 70 000 0000</a></li>
-      <li><span>Instagram</span><a href="https://instagram.com/">@vizz</a></li>
       <li><span>Based in</span>Colombo, Sri Lanka</li>
     </ul>
   </section>
@@ -164,6 +163,7 @@ const projects = [
 ];
 
 const pad = n => String(n).padStart(2, "0");
+const slug = p => p.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
 const grid = document.getElementById("grid");
 projects.forEach((p, i) => {
@@ -179,7 +179,7 @@ projects.forEach((p, i) => {
       <span class="shade"></span>
       <span class="cap">${p.title}<small>${n > 1 ? `No. 01–${pad(n)}` : p.type}</small></span>
       <span class="play">▶ Play</span>`;
-    b.addEventListener("click", () => openProject(p));
+    b.addEventListener("click", () => openProject(p, true));
   }
   grid.appendChild(b);
 });
@@ -193,7 +193,7 @@ function play(id) {
     allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="Video player"></iframe>`;
 }
 
-function openProject(p) {
+function openProject(p, push) {
   document.getElementById("v-title").textContent = p.title;
   document.getElementById("v-about").textContent = p.about;
   document.getElementById("v-facts").innerHTML =
@@ -212,11 +212,30 @@ function openProject(p) {
     });
   }
   play(p.videos[0]);
-  dlg.showModal();
+  if (!dlg.open) dlg.showModal();
+  // Give the open project its own history entry (#magical-sky), so the browser's Back button
+  // closes the viewer and returns to the grid instead of leaving the site.
+  if (push) history.pushState({ project: slug(p) }, "", "#" + slug(p));
 }
 
+const fromHash = () => projects.find(p => !p.empty && slug(p) === location.hash.slice(1));
+
 // Stop the video when the viewer closes.
-dlg.addEventListener("close", () => { player.innerHTML = ""; });
+dlg.addEventListener("close", () => {
+  player.innerHTML = "";
+  if (history.state?.project) history.back();
+});
+window.addEventListener("popstate", () => {
+  const p = fromHash();
+  if (p) openProject(p, false);
+  else if (dlg.open) dlg.close();
+});
+// A shared link like vizz.../#magical-sky opens that project, with the grid one Back step behind it.
+if (fromHash()) {
+  const p = fromHash();
+  history.replaceState(null, "", location.pathname + location.search);
+  openProject(p, true);
+}
 document.getElementById("v-close").addEventListener("click", () => dlg.close());
 
 // Respect reduced-motion settings: freeze the thermal animation.
