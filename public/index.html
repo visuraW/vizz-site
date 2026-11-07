@@ -4,7 +4,22 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>VIZZ</title>
-<meta name="description" content="VIZZ — AI video commercials, brand films and motion. Based in Colombo, Sri Lanka.">
+<meta name="description" content="VIZZ is an AI video creator in Colombo, Sri Lanka, making AI commercials, brand films and event videos for Web3 brands and local businesses.">
+<link rel="canonical" href="https://vizz.visuraw12345.workers.dev/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="VIZZ">
+<meta property="og:title" content="VIZZ — AI video creator, Colombo">
+<meta property="og:description" content="VIZZ is an AI video creator in Colombo, Sri Lanka, making AI commercials, brand films and event videos for Web3 brands and local businesses.">
+<meta property="og:url" content="https://vizz.visuraw12345.workers.dev/">
+<meta property="og:image" content="https://vizz.visuraw12345.workers.dev/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="VIZZ thermal logo above stills from AI commercials">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="VIZZ — AI video creator, Colombo">
+<meta name="twitter:description" content="VIZZ is an AI video creator in Colombo, Sri Lanka, making AI commercials, brand films and event videos for Web3 brands and local businesses.">
+<meta name="twitter:image" content="https://vizz.visuraw12345.workers.dev/og.jpg">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Person", "name": "VIZZ", "url": "https://vizz.visuraw12345.workers.dev/", "jobTitle": "AI video creator", "description": "VIZZ is an AI video creator in Colombo, Sri Lanka, making AI commercials, brand films and event videos for Web3 brands and local businesses.", "address": {"@type": "PostalAddress", "addressLocality": "Colombo", "addressCountry": "LK"}, "knowsAbout": ["AI commercials", "AI video", "brand films", "event videos", "video editing", "motion design"]}</script>
 <meta name="theme-color" content="#ffffff">
 <link rel="icon" href="favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -28,6 +43,7 @@ img,iframe{display:block;width:100%}
 /* header */
 .top{position:sticky;top:0;z-index:20;background:var(--bg);display:flex;align-items:center;justify-content:space-between;gap:24px;padding:clamp(14px,2vw,26px) var(--gutter)} /* stays at the top while scrolling */
 .top>a{display:block;margin-left:-8px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .name{display:block;height:clamp(36px,3.6vw,46px);width:auto}
 .name text{font:900 220px Name,Arial Black,sans-serif;letter-spacing:-4px}
 nav{display:flex;gap:clamp(18px,2.4vw,32px);font-size:clamp(21px,2vw,27px)}
@@ -58,9 +74,9 @@ nav a:hover{border-color:currentColor}
 /* inquiries */
 .inq{margin:clamp(64px,10vw,140px) var(--gutter) 0;border-top:1px solid var(--line);padding-top:28px;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:32px}
 .inq h2{font-weight:400;font-size:clamp(34px,4.4vw,62px);line-height:1;margin:0;letter-spacing:-.01em}
-.inq ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:120px auto 1fr;gap:10px 16px;align-content:start;align-items:baseline}
+.inq ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:max-content minmax(0,max-content) max-content;gap:10px 20px;align-content:start;align-items:baseline}
 .inq li{display:contents} /* rows share the list's columns, so the Copy buttons line up */
-.inq li a{justify-self:start}
+.inq li a{justify-self:start;overflow-wrap:anywhere}
 .copy{font-size:14px;color:var(--muted);border:1px solid var(--line);padding:1px 10px;justify-self:start}
 .copy:hover{color:var(--ink);border-color:var(--ink)}
 .inq li>span:first-child{color:var(--muted);font-size:16px}
@@ -93,10 +109,17 @@ dialog::backdrop{background:var(--bg)}
 .meta dt{color:var(--muted)}
 .meta dd{margin:0}
 
+@media (max-width:1100px){
+  .inq{grid-template-columns:minmax(0,1fr)}
+}
+@media (min-width:761px) and (max-width:1100px){
+  .tile,.tile.wide,.tile.narrow,.tile.square,.tile.half{flex-basis:50%}
+  .tile .in{height:auto;aspect-ratio:16/9}
+}
 @media (max-width:760px){
   .tile,.tile.wide,.tile.narrow,.tile.square,.tile.half{flex-basis:100%}
   .tile .in{height:auto;aspect-ratio:16/9}
-  .inq{grid-template-columns:minmax(0,1fr)}
+  .inq ul{gap:12px 14px}
   .tile .play{opacity:1}
 }
 </style>
@@ -138,6 +161,7 @@ dialog::backdrop{background:var(--bg)}
 </header>
 
 <main>
+  <h1 class="sr-only">VIZZ — AI video creator in Colombo, Sri Lanka: AI commercials, brand films and event videos</h1>
   <section class="work" id="work" aria-label="Work">
     <div class="grid" id="grid"></div>
   </section>
@@ -343,8 +367,14 @@ tiles.forEach(({ p, v, i, size }, n) => {
       <span class="shade"></span>
       <span class="cap">${p.title}<small>${label(p, i)}</small></span>
       <span class="play">${PLAY} Play</span></span>`;
-    cover(v).then(src => src && b.firstChild.insertAdjacentHTML("afterbegin",
-      `<img src="${src}" alt="" onerror="this.remove()" loading="${n < 4 ? "eager" : "lazy"}" decoding="async">`));
+    const alt = `${p.title}${p.videos.length > 1 ? " " + label(p, i) : ""}, ${p.type.toLowerCase()} by VIZZ`;
+    cover(v).then(src => {
+      if (!src) return;
+      const set = src.startsWith("covers/")
+        ? `srcset="${src.replace("covers/", "covers/sm/")} 800w, ${src} 1600w" sizes="(max-width:760px) 100vw, (max-width:1100px) 50vw, 45vw"` : "";
+      b.firstChild.insertAdjacentHTML("afterbegin",
+        `<img src="${src}" ${set} alt="${alt}" onerror="this.remove()" loading="${n < 4 ? "eager" : "lazy"}" decoding="async">`);
+    });
     b.addEventListener("click", () => openProject(p, i, true));
   }
   grid.appendChild(b);

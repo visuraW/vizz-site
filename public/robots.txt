@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://vizz.visuraw12345.workers.dev/sitemap.xml
