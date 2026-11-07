@@ -43,6 +43,14 @@ img,iframe{display:block;width:100%}
 /* header */
 .top{position:sticky;top:0;z-index:20;background:var(--bg);display:flex;align-items:center;justify-content:space-between;gap:24px;padding:clamp(14px,2vw,26px) var(--side)} /* stays at the top while scrolling */
 .top>a{display:block;margin-left:-8px}
+/* Thermal wash shown when the logo is clicked: a faint heat-map glow that fades in and out. */
+.wash{position:fixed;inset:0;z-index:30;pointer-events:none;opacity:0;transition:opacity .45s ease;
+  background:
+    radial-gradient(40% 45% at 30% 40%, #0a1f8f 0%, #2a7bff 30%, #22c7f0 50%, transparent 72%),
+    radial-gradient(35% 40% at 72% 62%, #2a7bff 0%, #46e07a 35%, #ffe14d 55%, transparent 75%),
+    radial-gradient(60% 70% at 50% 50%, #ff9f1c 0%, #ff5a36 40%, #ff9ad5 70%, transparent 100%);
+  filter:blur(40px)}
+.wash.on{opacity:.18}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .name{display:block;height:clamp(36px,3.6vw,46px);width:auto}
 .name text{font:900 220px Name,Arial Black,sans-serif;letter-spacing:-4px}
@@ -126,6 +134,7 @@ dialog::backdrop{background:var(--bg)}
 </head>
 <body>
 
+<div class="wash" id="wash" aria-hidden="true"></div>
 <header class="top">
   <a href="/" aria-label="VIZZ home">
     <svg class="name" viewBox="0 0 580 206" role="img" aria-labelledby="name-t">
@@ -465,6 +474,19 @@ document.querySelectorAll(".copy").forEach(b => b.addEventListener("click", asyn
   catch { b.textContent = b.dataset.copy; }
   setTimeout(() => { b.textContent = "Copy"; }, 1500);
 }));
+
+// Clicking the logo: a soft thermal wash fades in, the page returns to the top, the wash fades out.
+// Ctrl/Cmd-click and middle-click still open the site in a new tab as normal.
+const wash = document.getElementById("wash");
+document.querySelector(".top > a").addEventListener("click", e => {
+  if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+  e.preventDefault();
+  if (location.hash) history.replaceState(null, "", location.pathname);
+  const toTop = () => { document.documentElement.style.scrollBehavior = "auto"; scrollTo(0, 0); document.documentElement.style.scrollBehavior = ""; };
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return toTop();
+  wash.classList.add("on");
+  setTimeout(() => { toTop(); wash.classList.remove("on"); }, 450);
+});
 
 // When the visitor switches to another tab, the tab title quietly says "VIZZ HERE."
 document.addEventListener("visibilitychange", () => { document.title = document.hidden ? "VIZZ HERE." : "VIZZ"; });
