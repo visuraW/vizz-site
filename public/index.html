@@ -168,7 +168,7 @@ const projects = [
     videos: [
       { id: "1244720096", cover: "covers/magical-sky-01.webp" },
       { id: "1244721930", cover: "covers/magical-sky-02.webp" },
-      { id: "1239257105" },
+      { id: "1239257105", cover: "covers/magical-sky-03.webp" },
     ],
   },
   { title: "Project title", empty: true },
@@ -223,7 +223,7 @@ function play(p, i) {
   if (!window.Vimeo) return;
   const vp = new Vimeo.Player(player.querySelector("iframe"));
   // Cut away just before the last frame, before Vimeo can show its "More from ..." screen.
-  vp.on("timeupdate", d => { if (d.duration && d.duration - d.seconds < 0.4) { vp.pause(); showEnd(); } });
+  vp.on("timeupdate", d => { if (d.duration && d.duration - d.seconds < 0.7) { vp.pause(); showEnd(); } });
   vp.on("ended", showEnd);
 }
 
@@ -288,8 +288,8 @@ if (shared) {
 }
 document.getElementById("v-close").addEventListener("click", () => dlg.close());
 
-// When the visitor switches to another tab, the tab title quietly says "vizz here."
-document.addEventListener("visibilitychange", () => { document.title = document.hidden ? "vizz here." : "VIZZ"; });
+// When the visitor switches to another tab, the tab title quietly says "VIZZ HERE."
+document.addEventListener("visibilitychange", () => { document.title = document.hidden ? "VIZZ HERE." : "VIZZ"; });
 
 // Respect reduced-motion settings: freeze the thermal animation.
 if (matchMedia("(prefers-reduced-motion: reduce)").matches) document.querySelector(".name").pauseAnimations();
