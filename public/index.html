@@ -40,6 +40,8 @@ nav a:hover{border-color:currentColor}
 .tile{flex:0 0 43.716%;padding:6px;text-align:left;min-width:0}
 .tile.wide{flex-basis:56.284%}
 .tile.narrow{flex-basis:28.142%}
+.tile.square{flex-basis:24.59%}
+.tile.half{flex-basis:50.82%} /* square + square + half fill one row */
 .tile:last-child{flex-grow:1} /* an unfinished last row stretches to full width */
 .tile .in{position:relative;display:block;height:calc(24.59cqw - 12px);overflow:hidden;background:var(--tile)}
 .tile img{height:100%;object-fit:cover;transition:transform .5s}
@@ -88,7 +90,7 @@ dialog::backdrop{background:var(--bg)}
 .meta dd{margin:0}
 
 @media (max-width:760px){
-  .tile,.tile.wide,.tile.narrow{flex-basis:100%}
+  .tile,.tile.wide,.tile.narrow,.tile.square,.tile.half{flex-basis:100%}
   .tile .in{height:auto;aspect-ratio:16/9}
   .inq{grid-template-columns:minmax(0,1fr)}
   .tile .play{opacity:1}
@@ -235,25 +237,33 @@ const projects = [
     brand: "Beacon DeFi",
     type: "AI commercial",
     year: "2025",
-    videos: [{ id: "1139157218", cover: "covers/beacon-defi.webp" }],
+    videos: [{ id: "1139157218", cover: "covers/beacon-defi.webp", size: "square" }],
   },
   {
     title: "CapX AI",
     brand: "CapX AI",
     type: "AI commercial",
     year: "2025",
-    videos: [{ id: "1148315290", cover: "covers/capx-ai.webp" }],
+    videos: [{ id: "1148315290", cover: "covers/capx-ai.webp", size: "square" }],
   },
   {
     title: "PistachioFi",
     brand: "PistachioFi",
     type: "AI commercial",
     year: "2025",
-    videos: [{ id: "1140256359", cover: "covers/pistachiofi.webp" }],
+    videos: [{ id: "1140256359", cover: "covers/pistachiofi.webp", size: "half" }],
+  },
+  {
+    title: "Avantis",
+    brand: "Avantis",
+    type: "AI commercial",
+    year: "2025",
+    videos: [{ id: "1148300624", cover: "covers/avantis.webp" }],
   },
 ];
 
 // Tile widths repeat in this order; each row adds up to the full width.
+// A video can set its own size ("wide", "narrow", "square", "half") to override the pattern.
 const SIZES = ["wide", "", "narrow", "narrow", "", "", "wide", "", "narrow", "narrow"];
 const PLAY = `<svg class="pi" viewBox="0 0 11 13" aria-hidden="true"><path d="M0 0v13l11-6.5z"/></svg>`;
 
@@ -272,7 +282,7 @@ const grid = document.getElementById("grid");
 const tiles = projects.flatMap(p => p.empty ? [{ p }] : p.videos.map((v, i) => ({ p, v, i })));
 tiles.forEach(({ p, v, i }, n) => {
   const b = document.createElement("button");
-  b.className = ["tile", SIZES[n % SIZES.length], p.empty && "empty"].filter(Boolean).join(" ");
+  b.className = ["tile", (v && v.size) || SIZES[n % SIZES.length], p.empty && "empty"].filter(Boolean).join(" ");
   if (p.empty) {
     b.disabled = true;
     b.innerHTML = `<span class="in"><span class="cap">${p.title}<small>Placeholder</small></span></span>`;
