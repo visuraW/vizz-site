@@ -58,9 +58,13 @@ nav a:hover{border-color:currentColor}
 /* inquiries */
 .inq{margin:clamp(64px,10vw,140px) var(--gutter) 0;border-top:1px solid var(--line);padding-top:28px;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:32px}
 .inq h2{font-weight:400;font-size:clamp(34px,4.4vw,62px);line-height:1;margin:0;letter-spacing:-.01em}
-.inq ul{list-style:none;margin:0;padding:0;display:grid;gap:10px;align-content:start}
-.inq li{display:grid;grid-template-columns:120px 1fr;gap:16px;align-items:baseline}
-.inq li span{color:var(--muted);font-size:16px}
+.inq ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:120px auto 1fr;gap:10px 16px;align-content:start;align-items:baseline}
+.inq li{display:contents} /* rows share the list's columns, so the Copy buttons line up */
+.inq li a{justify-self:start}
+.copy{font-size:14px;color:var(--muted);border:1px solid var(--line);padding:1px 10px;justify-self:start}
+.copy:hover{color:var(--ink);border-color:var(--ink)}
+.inq li>span:first-child{color:var(--muted);font-size:16px}
+.inq .place{grid-column:2 / -1}
 .inq li a{border-bottom:1px solid var(--line)}
 .inq li a:hover{border-color:currentColor}
 
@@ -141,9 +145,9 @@ dialog::backdrop{background:var(--bg)}
   <section class="inq" id="inquiries" aria-labelledby="inq-h">
     <h2 id="inq-h">i do videos,<br>got one in mind?</h2>
     <ul>
-      <li><span>Email</span><a href="mailto:hello@example.com">hello@example.com</a></li>
-      <li><span>WhatsApp</span><a href="https://wa.me/94700000000">+94 70 000 0000</a></li>
-      <li><span>Based in</span>Colombo, Sri Lanka</li>
+      <li><span>Email</span><a href="mailto:hello@example.com">hello@example.com</a><button class="copy" data-copy="hello@example.com">Copy</button></li>
+      <li><span>WhatsApp</span><a href="https://wa.me/94700000000">+94 70 000 0000</a><button class="copy" data-copy="+94700000000">Copy</button></li>
+      <li><span>Based in</span><span class="place">Colombo, Sri Lanka</span></li>
     </ul>
   </section>
 </main>
@@ -313,11 +317,11 @@ const LAYOUT = [
   ["base-batches-002/01", "regular"], ["themembersonly/01", "narrow"], ["magical-sky/03", "narrow"],
   ["pistachiofi/01", "wide"], ["the-weekend-calling/01", "regular"],
   ["themembersonly/02"], ["the-arrival/01"],
-  ["the-weekend-calling/02"], ["the-weekend-calling/03"], ["ilovebrunch/01"],
+  ["the-weekend-calling/02"], ["the-weekend-calling/03"], ["moku-games/01"],
   ["avantis/01", "narrow"], ["do-you-feel-it/01", "regular"], ["avantis/02", "narrow"],
 ];
 // These go to the very end of the grid.
-const LAST = [];
+const LAST = ["ilovebrunch/01"];
 const key = (p, i) => `${slug(p)}/${pad(i + 1)}`;
 const all = projects.flatMap(p => p.empty ? [{ p }] : p.videos.map((v, i) => ({ p, v, i, size: v.size })));
 const first = LAYOUT.map(([k, size]) => ({ ...all.find(t => t.v && key(t.p, t.i) === k), size }));
@@ -420,6 +424,13 @@ if (shared) {
   openProject(shared.p, shared.i, true);
 }
 document.getElementById("v-close").addEventListener("click", () => dlg.close());
+
+// Copy buttons next to the email and WhatsApp number.
+document.querySelectorAll(".copy").forEach(b => b.addEventListener("click", async () => {
+  try { await navigator.clipboard.writeText(b.dataset.copy); b.textContent = "Copied"; }
+  catch { b.textContent = b.dataset.copy; }
+  setTimeout(() => { b.textContent = "Copy"; }, 1500);
+}));
 
 // When the visitor switches to another tab, the tab title quietly says "VIZZ HERE."
 document.addEventListener("visibilitychange", () => { document.title = document.hidden ? "VIZZ HERE." : "VIZZ"; });
