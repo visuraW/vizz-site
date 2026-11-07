@@ -3,9 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>VIZZ — AI video commercials</title>
+<title>VIZZ</title>
 <meta name="description" content="VIZZ — AI video commercials, brand films and motion. Based in Colombo, Sri Lanka.">
 <meta name="theme-color" content="#ffffff">
+<link rel="icon" href="favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<script src="vimeo-player.min.js" defer></script>
 <link rel="preload" href="fonts/rubik-latin-900-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/instrument-serif-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <style>
@@ -217,11 +220,17 @@ function play(p, i) {
   cuts.querySelectorAll("button").forEach((x, k) => x.setAttribute("aria-pressed", k === i));
   player.innerHTML = `<iframe src="https://player.vimeo.com/video/${p.videos[i].id}?autoplay=1&title=0&byline=0&portrait=0&dnt=1"
     allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="${p.title} ${label(p, i)}"></iframe>`;
+  if (!window.Vimeo) return;
+  const vp = new Vimeo.Player(player.querySelector("iframe"));
+  // Cut away just before the last frame, before Vimeo can show its "More from ..." screen.
+  vp.on("timeupdate", d => { if (d.duration && d.duration - d.seconds < 0.4) { vp.pause(); showEnd(); } });
+  vp.on("ended", showEnd);
 }
 
-// Vimeo's free player shows its own "more videos" screen at the end. When a video ends,
+// Vimeo's free player shows its own "More from ..." screen at the end. When a video ends,
 // swap the player for our own end card (cover image, Replay, Next) so that screen never shows.
 async function showEnd() {
+  if (!player.querySelector("iframe")) return;
   const { p, i } = current;
   const next = i + 1 < p.videos.length;
   player.innerHTML = `<div class="end"><div><button data-go="${i}">↺ Replay</button>${next ? `<button data-go="${i + 1}">${label(p, i + 1)} →</button>` : ""}</div></div>`;
@@ -233,14 +242,6 @@ player.addEventListener("click", e => {
   const go = e.target.closest("[data-go]");
   if (go) play(current.p, +go.dataset.go);
 });
-window.addEventListener("message", e => {
-  const f = player.querySelector("iframe");
-  if (e.origin !== "https://player.vimeo.com" || !f || e.source !== f.contentWindow) return;
-  let d; try { d = typeof e.data === "string" ? JSON.parse(e.data) : e.data; } catch { return; }
-  if (d.event === "ready") f.contentWindow.postMessage(JSON.stringify({ method: "addEventListener", value: "ended" }), e.origin);
-  if (d.event === "ended") showEnd();
-});
-
 function openProject(p, i, push) {
   document.getElementById("v-title").textContent = p.title;
   document.getElementById("v-facts").innerHTML =
