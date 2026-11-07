@@ -156,14 +156,17 @@ dialog::backdrop{background:var(--bg)}
 <script>
 // Add work here. Every video gets its own tile on the homepage; inside the viewer, a project's
 // videos are labelled No. 01, No. 02, ... A video without a "cover" uses its Vimeo thumbnail.
-// Videos 02 and 03 reuse the one real link until the other two arrive.
 const projects = [
   {
     title: "Magical Sky",
     client: "Magical Sky",
     type: "AI commercial",
     year: "2026",
-    videos: [{ id: "1239257105" }, { id: "1239257105" }, { id: "1239257105" }],
+    videos: [
+      { id: "1244720096", cover: "covers/magical-sky-01.webp" },
+      { id: "1244721930", cover: "covers/magical-sky-02.webp" },
+      { id: "1239257105" },
+    ],
   },
   { title: "Project title", empty: true },
   { title: "Project title", empty: true },
