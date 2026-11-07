@@ -288,6 +288,9 @@ if (shared) {
 }
 document.getElementById("v-close").addEventListener("click", () => dlg.close());
 
+// When the visitor switches to another tab, the tab title quietly says "vizz here."
+document.addEventListener("visibilitychange", () => { document.title = document.hidden ? "vizz here." : "VIZZ"; });
+
 // Respect reduced-motion settings: freeze the thermal animation.
 if (matchMedia("(prefers-reduced-motion: reduce)").matches) document.querySelector(".name").pauseAnimations();
 
