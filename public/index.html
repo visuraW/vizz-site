@@ -312,9 +312,12 @@ const LAYOUT = [
   ["the-arrival/02", "half"], ["newschoolcommunity/01", "regular"],
   ["base-batches-002/01", "regular"], ["themembersonly/01", "narrow"], ["magical-sky/03", "narrow"],
   ["pistachiofi/01", "wide"], ["the-weekend-calling/01", "regular"],
+  ["themembersonly/02"], ["the-arrival/01"],
+  ["the-weekend-calling/02"], ["the-weekend-calling/03"], ["ilovebrunch/01"],
+  ["avantis/01", "narrow"], ["do-you-feel-it/01", "regular"], ["avantis/02", "narrow"],
 ];
 // These go to the very end of the grid.
-const LAST = ["do-you-feel-it/01"];
+const LAST = [];
 const key = (p, i) => `${slug(p)}/${pad(i + 1)}`;
 const all = projects.flatMap(p => p.empty ? [{ p }] : p.videos.map((v, i) => ({ p, v, i, size: v.size })));
 const first = LAYOUT.map(([k, size]) => ({ ...all.find(t => t.v && key(t.p, t.i) === k), size }));
