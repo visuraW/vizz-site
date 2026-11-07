@@ -31,19 +31,23 @@ nav{display:flex;gap:clamp(18px,2.4vw,32px);font-size:clamp(21px,2vw,27px)}
 nav a{border-bottom:1px solid transparent}
 nav a:hover{border-color:currentColor}
 
-/* work grid */
+/* work grid: rows of mixed widths that always add up to 100% (wide+regular, narrow+narrow+regular) */
 .work{padding:clamp(20px,3vw,48px) var(--gutter) 0}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.tile{position:relative;aspect-ratio:16/9;overflow:hidden;background:var(--tile);text-align:left;width:100%}
-.tile img{height:100%;object-fit:cover}
+.grid{container-type:inline-size;display:flex;flex-wrap:wrap;margin:0 -6px}
+.tile{flex:0 0 43.716%;padding:6px;text-align:left;min-width:0}
+.tile.wide{flex-basis:56.284%}
+.tile.narrow{flex-basis:28.142%}
+.tile .in{position:relative;display:block;height:calc(24.59cqw - 12px);overflow:hidden;background:var(--tile)}
+.tile img{height:100%;object-fit:cover;transition:transform .5s}
+.tile:hover img{transform:scale(1.02)}
 .tile .cap{position:absolute;left:16px;top:12px;right:16px;color:#fff;font-size:clamp(22px,2.4vw,34px);line-height:1.1;z-index:2}
 .tile .cap small{display:block;font-size:.6em;opacity:.9;margin-top:4px}
 .tile .shade{position:absolute;inset:0;background:linear-gradient(180deg,#0006,#0000 45%,#0005);z-index:1}
-.tile .play{position:absolute;left:16px;bottom:14px;color:#fff;font-size:20px;opacity:0;transition:opacity .2s;z-index:2}
+.tile .play{position:absolute;left:16px;bottom:14px;color:#fff;font-size:20px;display:flex;align-items:center;gap:8px;opacity:0;transition:opacity .2s;z-index:2}
+.pi{width:11px;height:13px;fill:currentColor;flex:none}
 .tile:hover .play,.tile:focus-visible .play{opacity:1}
 .tile.empty{cursor:default}
 .tile.empty .cap{color:var(--muted)}
-.tile.empty .shade{display:none}
 
 /* inquiries */
 .inq{margin:clamp(64px,10vw,140px) var(--gutter) 0;border-top:1px solid var(--line);padding-top:28px;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:32px}
@@ -69,15 +73,20 @@ dialog::backdrop{background:var(--bg)}
 .cuts{display:flex;gap:6px;margin-top:14px;flex-wrap:wrap}
 .cuts button{padding:4px 12px;border:1px solid var(--line);font-size:18px}
 .cuts button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
-.meta{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:32px;margin-top:28px}
-.meta p{margin:0;max-width:52ch}
-.meta dl{margin:0;display:grid;grid-template-columns:90px 1fr;gap:6px 16px;font-size:18px}
+.player{position:relative}
+.end{position:absolute;inset:0;display:grid;place-items:center;background:#000 center/cover}
+.end div{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.end button{background:#fff;color:var(--ink);padding:8px 18px;font-size:19px}
+.end button:hover{background:var(--ink);color:#fff}
+.meta{margin-top:24px}
+.meta dl{margin:0;display:grid;grid-template-columns:90px 1fr;gap:6px 16px;font-size:18px;max-width:420px}
 .meta dt{color:var(--muted)}
 .meta dd{margin:0}
 
 @media (max-width:760px){
-  .grid{grid-template-columns:minmax(0,1fr)}
-  .inq,.meta{grid-template-columns:minmax(0,1fr)}
+  .tile,.tile.wide,.tile.narrow{flex-basis:100%}
+  .tile .in{height:auto;aspect-ratio:16/9}
+  .inq{grid-template-columns:minmax(0,1fr)}
   .tile .play{opacity:1}
 }
 </style>
@@ -140,12 +149,13 @@ dialog::backdrop{background:var(--bg)}
     <div class="view-top"><h2 id="v-title"></h2><button class="close" id="v-close">Close ×</button></div>
     <div class="player" id="v-player"></div>
     <div class="cuts" id="v-cuts" role="group" aria-label="Videos in this project"></div>
-    <div class="meta"><p id="v-about"></p><dl id="v-facts"></dl></div>
+    <div class="meta"><dl id="v-facts"></dl></div>
   </div>
 </dialog>
 
 <script>
-// Add work here. Each project can hold several videos, labelled No. 01, No. 02, ...
+// Add work here. Every video gets its own tile on the homepage; inside the viewer, a project's
+// videos are labelled No. 01, No. 02, ... A video without a "cover" uses its Vimeo thumbnail.
 // Videos 02 and 03 reuse the one real link until the other two arrive.
 const projects = [
   {
@@ -153,33 +163,43 @@ const projects = [
     client: "Magical Sky",
     type: "AI commercial",
     year: "2026",
-    about: "Placeholder text: two or three sentences about the brief and the idea go here.",
-    videos: ["1239257105", "1239257105", "1239257105"],
-    cover: "https://i.vimeocdn.com/video/2216702772-53aa5ae5f13e1f8fd5a39f2cce952fcb2d09a0da30b0521ec4d8ca2ad8b6b894-d_1280",
+    videos: [{ id: "1239257105" }, { id: "1239257105" }, { id: "1239257105" }],
   },
-  { title: "Project title", empty: true },
   { title: "Project title", empty: true },
   { title: "Project title", empty: true },
 ];
 
+// Tile widths repeat in this order; each row adds up to the full width.
+const SIZES = ["wide", "", "narrow", "narrow", "", "", "wide", "", "narrow", "narrow"];
+const PLAY = `<svg class="pi" viewBox="0 0 11 13" aria-hidden="true"><path d="M0 0v13l11-6.5z"/></svg>`;
+
 const pad = n => String(n).padStart(2, "0");
 const slug = p => p.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+const label = (p, i) => p.videos.length > 1 ? `No. ${pad(i + 1)}` : p.type;
+
+const thumbs = {};
+function cover(v) {
+  if (v.cover) return Promise.resolve(v.cover);
+  return thumbs[v.id] ??= fetch(`https://vimeo.com/api/oembed.json?url=https://vimeo.com/${v.id}&width=1280`)
+    .then(r => r.json()).then(d => d.thumbnail_url).catch(() => "");
+}
 
 const grid = document.getElementById("grid");
-projects.forEach((p, i) => {
+const tiles = projects.flatMap(p => p.empty ? [{ p }] : p.videos.map((v, i) => ({ p, v, i })));
+tiles.forEach(({ p, v, i }, n) => {
   const b = document.createElement("button");
-  b.className = "tile" + (p.empty ? " empty" : "");
+  b.className = ["tile", SIZES[n % SIZES.length], p.empty && "empty"].filter(Boolean).join(" ");
   if (p.empty) {
     b.disabled = true;
-    b.innerHTML = `<span class="cap">${p.title}<small>Placeholder</small></span>`;
+    b.innerHTML = `<span class="in"><span class="cap">${p.title}<small>Placeholder</small></span></span>`;
   } else {
-    const n = p.videos.length;
-    b.innerHTML = `
-      <img src="${p.cover}" alt="" onerror="this.remove()" loading="${i < 2 ? "eager" : "lazy"}" decoding="async">
+    b.innerHTML = `<span class="in">
       <span class="shade"></span>
-      <span class="cap">${p.title}<small>${n > 1 ? `No. 01–${pad(n)}` : p.type}</small></span>
-      <span class="play">▶ Play</span>`;
-    b.addEventListener("click", () => openProject(p, true));
+      <span class="cap">${p.title}<small>${label(p, i)}</small></span>
+      <span class="play">${PLAY} Play</span></span>`;
+    cover(v).then(src => src && b.firstChild.insertAdjacentHTML("afterbegin",
+      `<img src="${src}" alt="" onerror="this.remove()" loading="${n < 4 ? "eager" : "lazy"}" decoding="async">`));
+    b.addEventListener("click", () => openProject(p, i, true));
   }
   grid.appendChild(b);
 });
@@ -187,38 +207,64 @@ projects.forEach((p, i) => {
 const dlg = document.getElementById("viewer");
 const player = document.getElementById("v-player");
 const cuts = document.getElementById("v-cuts");
+let current = null;
 
-function play(id) {
-  player.innerHTML = `<iframe src="https://player.vimeo.com/video/${id}?autoplay=1&title=0&byline=0&portrait=0&dnt=1"
-    allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="Video player"></iframe>`;
+function play(p, i) {
+  current = { p, i };
+  cuts.querySelectorAll("button").forEach((x, k) => x.setAttribute("aria-pressed", k === i));
+  player.innerHTML = `<iframe src="https://player.vimeo.com/video/${p.videos[i].id}?autoplay=1&title=0&byline=0&portrait=0&dnt=1"
+    allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="${p.title} ${label(p, i)}"></iframe>`;
 }
 
-function openProject(p, push) {
+// Vimeo's free player shows its own "more videos" screen at the end. When a video ends,
+// swap the player for our own end card (cover image, Replay, Next) so that screen never shows.
+async function showEnd() {
+  const { p, i } = current;
+  const next = i + 1 < p.videos.length;
+  player.innerHTML = `<div class="end"><div><button data-go="${i}">↺ Replay</button>${next ? `<button data-go="${i + 1}">${label(p, i + 1)} →</button>` : ""}</div></div>`;
+  const src = await cover(p.videos[i]);
+  const end = player.querySelector(".end");
+  if (end && src) end.style.backgroundImage = `linear-gradient(#0005,#0005),url("${src}")`;
+}
+player.addEventListener("click", e => {
+  const go = e.target.closest("[data-go]");
+  if (go) play(current.p, +go.dataset.go);
+});
+window.addEventListener("message", e => {
+  const f = player.querySelector("iframe");
+  if (e.origin !== "https://player.vimeo.com" || !f || e.source !== f.contentWindow) return;
+  let d; try { d = typeof e.data === "string" ? JSON.parse(e.data) : e.data; } catch { return; }
+  if (d.event === "ready") f.contentWindow.postMessage(JSON.stringify({ method: "addEventListener", value: "ended" }), e.origin);
+  if (d.event === "ended") showEnd();
+});
+
+function openProject(p, i, push) {
   document.getElementById("v-title").textContent = p.title;
-  document.getElementById("v-about").textContent = p.about;
   document.getElementById("v-facts").innerHTML =
     `<dt>Client</dt><dd>${p.client}</dd><dt>Type</dt><dd>${p.type}</dd><dt>Year</dt><dd>${p.year}</dd>`;
   cuts.innerHTML = "";
   if (p.videos.length > 1) {
-    p.videos.forEach((id, i) => {
+    p.videos.forEach((_, k) => {
       const c = document.createElement("button");
-      c.textContent = `No. ${pad(i + 1)}`;
-      c.setAttribute("aria-pressed", i === 0);
-      c.addEventListener("click", () => {
-        cuts.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === c));
-        play(id);
-      });
+      c.textContent = label(p, k);
+      c.addEventListener("click", () => play(p, k));
       cuts.appendChild(c);
     });
   }
-  play(p.videos[0]);
+  play(p, i);
   if (!dlg.open) dlg.showModal();
-  // Give the open project its own history entry (#magical-sky), so the browser's Back button
+  // Give the open video its own history entry (#magical-sky/02), so the browser's Back button
   // closes the viewer and returns to the grid instead of leaving the site.
-  if (push) history.pushState({ project: slug(p) }, "", "#" + slug(p));
+  if (push) history.pushState({ project: slug(p) }, "", `#${slug(p)}/${pad(i + 1)}`);
 }
 
-const fromHash = () => projects.find(p => !p.empty && slug(p) === location.hash.slice(1));
+function fromHash() {
+  const [s, n] = location.hash.slice(1).split("/");
+  const p = projects.find(p => !p.empty && slug(p) === s);
+  if (!p) return null;
+  const i = Math.min(Math.max((parseInt(n, 10) || 1) - 1, 0), p.videos.length - 1);
+  return { p, i };
+}
 
 // Stop the video when the viewer closes.
 dlg.addEventListener("close", () => {
@@ -226,15 +272,15 @@ dlg.addEventListener("close", () => {
   if (history.state?.project) history.back();
 });
 window.addEventListener("popstate", () => {
-  const p = fromHash();
-  if (p) openProject(p, false);
+  const h = fromHash();
+  if (h) openProject(h.p, h.i, false);
   else if (dlg.open) dlg.close();
 });
-// A shared link like vizz.../#magical-sky opens that project, with the grid one Back step behind it.
-if (fromHash()) {
-  const p = fromHash();
+// A shared link like vizz.../#magical-sky/02 opens that video, with the grid one Back step behind it.
+const shared = fromHash();
+if (shared) {
   history.replaceState(null, "", location.pathname + location.search);
-  openProject(p, true);
+  openProject(shared.p, shared.i, true);
 }
 document.getElementById("v-close").addEventListener("click", () => dlg.close());
 
