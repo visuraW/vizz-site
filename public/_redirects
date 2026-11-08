@@ -1,2 +1,6 @@
-# Short links for posts and ads: clean to share, still tracked in Google Analytics.
+# Short links for posts, bios and ads: clean to share, still tracked in Google Analytics.
 /in /?utm_source=linkedin&utm_medium=social&utm_campaign=post 302
+/li /?utm_source=linkedin&utm_medium=profile&utm_campaign=bio 302
+/ig /?utm_source=instagram&utm_medium=profile&utm_campaign=bio 302
+/x  /?utm_source=x&utm_medium=profile&utm_campaign=bio 302
+/be /?utm_source=behance&utm_medium=profile&utm_campaign=bio 302
