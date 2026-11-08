@@ -83,7 +83,9 @@ a{color:inherit;text-decoration:none}
 button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
 img,iframe{display:block;width:100%}
 .top{position:sticky;top:0;z-index:20;background:var(--bg);display:flex;align-items:center;justify-content:space-between;gap:24px;padding:clamp(14px,2vw,26px) var(--side)}
-.top>a{display:block;margin-left:-8px}
+.top a:has(.name){display:block;margin-left:-8px}
+.brand-block{display:flex;flex-direction:column;gap:2px}
+.tag{margin:0;font-size:clamp(15px,1.3vw,18px);line-height:1.2;color:var(--muted);white-space:nowrap}
 .cta-art{display:block;width:auto;overflow:visible}
 .nav-cta .cta-art{height:clamp(15px,1.6vw,21px)}
 .nav-cta .two{display:none}

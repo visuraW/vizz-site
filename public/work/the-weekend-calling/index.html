@@ -37,7 +37,9 @@ a{color:inherit;text-decoration:none}
 button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
 img,iframe{display:block;width:100%}
 .top{position:sticky;top:0;z-index:20;background:var(--bg);display:flex;align-items:center;justify-content:space-between;gap:24px;padding:clamp(14px,2vw,26px) var(--side)}
-.top>a{display:block;margin-left:-8px}
+.top a:has(.name){display:block;margin-left:-8px}
+.brand-block{display:flex;flex-direction:column;gap:2px}
+.tag{margin:0;font-size:clamp(15px,1.3vw,18px);line-height:1.2;color:var(--muted);white-space:nowrap}
 .cta-art{display:block;width:auto;overflow:visible}
 .nav-cta .cta-art{height:clamp(15px,1.6vw,21px)}
 .nav-cta .two{display:none}
@@ -109,6 +111,7 @@ footer{display:flex;justify-content:space-between;padding:48px var(--side) 32px;
   </defs>
 </svg>
 <header class="top">
+  <div class="brand-block">
   <a href="/" aria-label="VIZZ home">
     <svg class="name" viewBox="0 0 580 206" role="img" aria-labelledby="name-t">
       <title id="name-t">VIZZ</title>
@@ -136,6 +139,8 @@ footer{display:flex;justify-content:space-between;padding:48px var(--side) 32px;
       <text x="26" y="180" filter="url(#thermal)">VIZZ</text>
     </svg>
   </a>
+  <p class="tag">AI commercials and brand films</p>
+  </div>
   <nav aria-label="Main">
     <a href="/#work" class="nav-work">Work</a>
     <a href="/#inquiries" class="nav-inq">Inquiries</a>

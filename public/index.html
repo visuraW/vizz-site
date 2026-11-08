@@ -50,7 +50,7 @@ img,iframe{display:block;width:100%}
 
 /* header */
 .top{position:sticky;top:0;z-index:20;background:var(--bg);display:flex;align-items:center;justify-content:space-between;gap:24px;padding:clamp(14px,2vw,26px) var(--side)} /* stays at the top while scrolling */
-.top>a{display:block;margin-left:-8px}
+.top a:has(.name){display:block;margin-left:-8px}
 /* Thermal wash shown when the logo is clicked: a faint heat-map glow that fades in and out. */
 .wash{position:fixed;inset:0;z-index:30;pointer-events:none;opacity:0;transition:opacity .45s ease;
   background:
@@ -89,7 +89,7 @@ nav a:hover{border-color:currentColor}
 .tile.empty .cap{color:var(--muted)}
 
 /* inquiries */
-.inq{margin:clamp(64px,10vw,140px) var(--side) 0;border-top:1px solid var(--line);padding-top:28px;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:32px}
+.inq{margin:clamp(48px,7vw,100px) var(--side) 0;border-top:1px solid var(--line);padding-top:28px;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:32px}
 .inq h2{font-weight:400;font-size:clamp(34px,4.4vw,62px);line-height:1;margin:0;letter-spacing:-.01em}
 .inq ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:max-content minmax(0,max-content) max-content;gap:10px 20px;align-content:start;align-items:baseline}
 .inq li{display:contents} /* rows share the list's columns, so the Copy buttons line up */
@@ -116,7 +116,14 @@ nav{align-items:center}
 
 /* Project brief form */
 .inq-left ul{margin-top:32px}
-.intro{margin:0 0 clamp(10px,1.4vw,18px);font-size:clamp(18px,1.6vw,22px);color:var(--muted)}
+.brand-block{display:flex;flex-direction:column;gap:2px}
+.tag{margin:0;font-size:clamp(15px,1.3vw,18px);line-height:1.2;color:var(--muted);white-space:nowrap}
+
+/* Grey row of brand names the videos were made for. */
+.brands{margin:clamp(56px,8vw,110px) var(--side) 0;text-align:center}
+.brands p{margin:0 0 18px;font-size:15px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.brands ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;justify-content:center;gap:14px clamp(28px,4vw,64px)}
+.brands li{font:900 clamp(18px,2vw,28px)/1 Name,Arial Black,sans-serif;letter-spacing:.02em;color:#b9b9b9}
 .brief{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px 24px;align-content:start}
 .brief .full{grid-column:1 / -1}
 .brief label{display:grid;gap:6px;font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
@@ -220,6 +227,7 @@ dialog::backdrop{background:var(--bg)}
 </svg>
 <div class="wash" id="wash" aria-hidden="true"></div>
 <header class="top">
+  <div class="brand-block">
   <a href="/" aria-label="VIZZ home">
     <svg class="name" viewBox="0 0 580 206" role="img" aria-labelledby="name-t">
       <title id="name-t">VIZZ</title>
@@ -247,6 +255,8 @@ dialog::backdrop{background:var(--bg)}
       <text x="26" y="180" filter="url(#thermal)">VIZZ</text>
     </svg>
   </a>
+  <p class="tag">AI commercials and brand films</p>
+  </div>
   <nav aria-label="Main">
     <a href="#work" class="nav-work">Work</a>
     <a href="#inquiries" class="nav-inq">Inquiries</a>
@@ -257,8 +267,12 @@ dialog::backdrop{background:var(--bg)}
 <main>
   <h1 class="sr-only">VIZZ — AI video creator in Colombo, Sri Lanka: AI commercials, brand films and event videos</h1>
   <section class="work" id="work" aria-label="Work">
-    <p class="intro">AI commercials and brand films</p>
     <div class="grid" id="grid"></div>
+  </section>
+
+  <section class="brands" aria-labelledby="brands-h">
+    <p id="brands-h">Videos made for</p>
+    <ul><li>Base</li><li>Avantis</li><li>Zora</li><li>Moku Games</li><li>CapX AI</li><li>Beacon DeFi</li><li>PistachioFi</li></ul>
   </section>
 
   <section class="inq" id="inquiries" aria-labelledby="inq-h">
@@ -631,7 +645,7 @@ document.querySelectorAll(".copy").forEach(b => b.addEventListener("click", asyn
 // Clicking the logo: a soft thermal wash fades in, the page returns to the top, the wash fades out.
 // Ctrl/Cmd-click and middle-click still open the site in a new tab as normal.
 const wash = document.getElementById("wash");
-document.querySelector(".top > a").addEventListener("click", e => {
+document.querySelector(".brand-block > a").addEventListener("click", e => {
   if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
   e.preventDefault();
   if (location.hash) history.replaceState(null, "", location.pathname);
