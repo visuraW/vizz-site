@@ -169,6 +169,8 @@ dialog::backdrop{background:var(--bg)}
   .tile .in{height:auto;aspect-ratio:16/9}
 }
 @media (max-width:600px){
+  .brands{--h:22px;gap:14px 16px}
+  .brands p{flex-basis:100%;text-align:center} /* label on its own line, logos together below */
   .brand-block{gap:10px}
   .tag{padding-left:10px;font-size:13px;white-space:normal;max-width:8.5em} /* two short lines beside the logo */
   nav .nav-inq{display:none} /* on phones the CTA already leads to Inquiries */
@@ -176,6 +178,7 @@ dialog::backdrop{background:var(--bg)}
   .nav-cta .two{display:block;height:36px} /* same height as the VIZZ logo */
 }
 @media (max-width:360px){
+  .brands{--h:19px;gap:12px}
   .tag{display:none}
 }
 @media (max-width:420px){
@@ -281,6 +284,8 @@ dialog::backdrop{background:var(--bg)}
     <img src="logos/zora.png" alt="Zora" width="120" height="120" loading="lazy">
     <img src="logos/capx.png" alt="CapX" width="359" height="120" loading="lazy">
     <img src="logos/pistachiofi.png" alt="PistachioFi" width="131" height="120" loading="lazy">
+    <img src="logos/beacon.png" alt="Beacon DeFi" width="98" height="120" loading="lazy">
+    <img src="logos/moku.png" alt="Moku Games" width="137" height="120" loading="lazy">
   </section>
 
   <section class="inq" id="inquiries" aria-labelledby="inq-h">
