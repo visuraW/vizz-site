@@ -42,8 +42,8 @@ for (const [n, p] of projects.entries()) {
   };
   const kw = KEYWORDS[p.type] || "video production";
   const web3 = p.brand ? " for a Web3 brand" : "";
-  const desc = `${p.title}: ${kw}${count > 1 ? ` (${count} videos)` : ""}${web3}, ${p.year}. Made by VIZZ, AI video creator in Colombo, Sri Lanka.`;
-  const longDesc = `${desc} VIZZ makes AI commercials, AI video ads, brand films and event videos for brands in Sri Lanka and worldwide, including Web3 and tech companies.`;
+  const desc = `${p.title}: ${kw}${count > 1 ? ` (${count} videos)` : ""}${web3}, ${p.year}. Made by VIZZ for startups and brands worldwide.`;
+  const longDesc = `${desc} VIZZ makes AI commercials, launch videos, brand films and video editing for startups and brands worldwide, from San Francisco tech teams to Web3.`;
   const ld = {
     "@context": "https://schema.org",
     "@graph": p.videos.map((v, i) => ({
