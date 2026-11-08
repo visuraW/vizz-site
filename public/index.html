@@ -84,6 +84,7 @@ nav a:hover{border-color:currentColor}
 .tile .play{position:absolute;left:16px;bottom:14px;color:#fff;font-size:20px;display:flex;align-items:center;gap:8px;opacity:0;transition:opacity .2s;z-index:2}
 .pi{width:11px;height:13px;fill:currentColor;flex:none}
 .tile:hover .play,.tile:focus-visible .play{opacity:1}
+.tile .yr{position:absolute;right:16px;bottom:14px;color:#fff;font-size:18px;opacity:.9;z-index:2;font-variant-numeric:tabular-nums}
 .tile.empty{cursor:default}
 .tile.empty .cap{color:var(--muted)}
 
@@ -384,7 +385,8 @@ tiles.forEach(({ p, v, i, size }, n) => {
     b.innerHTML = `<span class="in">
       <span class="shade"></span>
       <span class="cap">${p.title}<small>${label(p, i)}</small></span>
-      <span class="play">${PLAY} Play</span></span>`;
+      <span class="play">${PLAY} Play</span>
+      <span class="yr">${p.year}</span></span>`;
     const alt = `${p.title}${p.videos.length > 1 ? " " + label(p, i) : ""}, ${p.type.toLowerCase()} by VIZZ`;
     cover(v).then(src => {
       if (!src) return;
