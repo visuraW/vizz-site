@@ -38,8 +38,10 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 img,iframe{display:block;width:100%}
 .top{position:sticky;top:0;z-index:20;background:var(--bg);display:flex;align-items:center;justify-content:space-between;gap:24px;padding:clamp(14px,2vw,26px) var(--side)}
 .top a:has(.name){display:block;margin-left:-8px}
-.brand-block{display:flex;flex-direction:column;gap:2px}
-.tag{margin:0;font-size:clamp(15px,1.3vw,18px);line-height:1.2;color:var(--muted);white-space:nowrap}
+.brand-block{display:flex;align-items:center;gap:clamp(12px,1.6vw,22px)}
+.tag{margin:0;padding-left:clamp(12px,1.6vw,22px);border-left:1px solid var(--line);font-size:clamp(15px,1.3vw,19px);line-height:1.2;color:var(--muted);white-space:nowrap}
+@media (max-width:600px){.brand-block{gap:10px}.tag{padding-left:10px;font-size:13px;white-space:normal;max-width:8.5em}}
+@media (max-width:360px){.tag{display:none}}
 .cta-art{display:block;width:auto;overflow:visible}
 .nav-cta .cta-art{height:clamp(15px,1.6vw,21px)}
 .nav-cta .two{display:none}

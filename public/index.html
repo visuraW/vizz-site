@@ -116,8 +116,8 @@ nav{align-items:center}
 
 /* Project brief form */
 .inq-left ul{margin-top:32px}
-.brand-block{display:flex;flex-direction:column;gap:2px}
-.tag{margin:0;font-size:clamp(15px,1.3vw,18px);line-height:1.2;color:var(--muted);white-space:nowrap}
+.brand-block{display:flex;align-items:center;gap:clamp(12px,1.6vw,22px)}
+.tag{margin:0;padding-left:clamp(12px,1.6vw,22px);border-left:1px solid var(--line);font-size:clamp(15px,1.3vw,19px);line-height:1.2;color:var(--muted);white-space:nowrap}
 
 /* Grey row of brand names the videos were made for. */
 .brands{margin:clamp(56px,8vw,110px) var(--side) 0;text-align:center}
@@ -170,9 +170,14 @@ dialog::backdrop{background:var(--bg)}
   .tile .in{height:auto;aspect-ratio:16/9}
 }
 @media (max-width:600px){
+  .brand-block{gap:10px}
+  .tag{padding-left:10px;font-size:13px;white-space:normal;max-width:8.5em} /* two short lines beside the logo */
   nav .nav-inq{display:none} /* on phones the CTA already leads to Inquiries */
   .nav-cta .one{display:none}
   .nav-cta .two{display:block;height:36px} /* same height as the VIZZ logo */
+}
+@media (max-width:360px){
+  .tag{display:none}
 }
 @media (max-width:420px){
   nav .nav-work{display:none}
