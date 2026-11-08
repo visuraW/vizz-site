@@ -14,7 +14,8 @@ const projects = new Function(home.slice(start, end) + "\nreturn projects;")().f
 const between = (a, b) => home.slice(home.indexOf(a), home.indexOf(b, home.indexOf(a)) + b.length);
 const header = between('<header class="top">', "</header>")
   .replace('<a href="/" aria-label="VIZZ home">', '<a href="/" aria-label="VIZZ home">')
-  .replace('href="#work"', 'href="/#work"').replace('href="#inquiries"', 'href="/#inquiries"');
+  .replace('href="#work"', 'href="/#work"').replace('href="#inquiries"', 'href="/#inquiries"').replace('href="#brief"', 'href="/#brief"');
+const ctaArt = between("<!-- Shared artwork", "</svg>");
 const analytics = between("<!-- Google Analytics -->", "</script>\n<script>") + between("  window.dataLayer", "</script>");
 
 const pad = n => String(n).padStart(2, "0");
@@ -83,6 +84,11 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 img,iframe{display:block;width:100%}
 .top{position:sticky;top:0;z-index:20;background:var(--bg);display:flex;align-items:center;justify-content:space-between;gap:24px;padding:clamp(14px,2vw,26px) var(--side)}
 .top>a{display:block;margin-left:-8px}
+.cta-art{display:block;width:auto;overflow:visible}
+.nav-cta .cta-art{height:clamp(15px,1.6vw,21px)}
+nav{align-items:center}
+@media (max-width:600px){nav .nav-inq{display:none}}
+@media (max-width:420px){nav .nav-work{display:none}.name{height:32px}}
 .name{display:block;height:clamp(36px,3.6vw,46px);width:auto}
 .name text{font:900 220px Name,Arial Black,sans-serif;letter-spacing:-4px}
 nav{display:flex;gap:clamp(18px,2.4vw,32px);font-size:clamp(21px,2vw,27px)}
@@ -112,6 +118,7 @@ footer{display:flex;justify-content:space-between;padding:48px var(--side) 32px;
 </style>
 </head>
 <body>
+${ctaArt}
 ${header}
 <main>
   <h1>${esc(p.title)}</h1>
