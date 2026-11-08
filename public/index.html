@@ -119,11 +119,10 @@ nav{align-items:center}
 .brand-block{display:flex;align-items:center;gap:clamp(12px,1.6vw,22px)}
 .tag{margin:0;padding-left:clamp(12px,1.6vw,22px);border-left:1px solid var(--line);font-size:clamp(15px,1.3vw,19px);line-height:1.2;color:var(--muted);white-space:nowrap}
 
-/* Grey row of brand names the videos were made for. */
-.brands{margin:clamp(56px,8vw,110px) var(--side) 0;text-align:center}
-.brands p{margin:0 0 18px;font-size:15px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-.brands ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;justify-content:center;gap:14px clamp(28px,4vw,64px)}
-.brands li{font:900 clamp(18px,2vw,28px)/1 Name,Arial Black,sans-serif;letter-spacing:.02em;color:#b9b9b9}
+/* "made for" and the brand marks, all on one line at the same height. */
+.brands{--h:clamp(22px,2.2vw,32px);display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:16px clamp(24px,3.6vw,56px);margin:clamp(56px,8vw,110px) var(--side) 0}
+.brands p{margin:0;font-size:calc(var(--h) * .8);line-height:1;color:var(--muted)}
+.brands img{display:block;height:var(--h);width:auto}
 .brief{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px 24px;align-content:start}
 .brief .full{grid-column:1 / -1}
 .brief label{display:grid;gap:6px;font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
@@ -276,8 +275,12 @@ dialog::backdrop{background:var(--bg)}
   </section>
 
   <section class="brands" aria-labelledby="brands-h">
-    <p id="brands-h">Videos made for</p>
-    <ul><li>Base</li><li>Avantis</li><li>Zora</li><li>Moku Games</li><li>CapX AI</li><li>Beacon DeFi</li><li>PistachioFi</li></ul>
+    <p id="brands-h">made for</p>
+    <img src="logos/base.png" alt="Base" width="120" height="120" loading="lazy">
+    <img src="logos/avantis.png" alt="Avantis" width="240" height="120" loading="lazy">
+    <img src="logos/zora.png" alt="Zora" width="120" height="120" loading="lazy">
+    <img src="logos/capx.png" alt="CapX" width="359" height="120" loading="lazy">
+    <img src="logos/pistachiofi.png" alt="PistachioFi" width="131" height="120" loading="lazy">
   </section>
 
   <section class="inq" id="inquiries" aria-labelledby="inq-h">
