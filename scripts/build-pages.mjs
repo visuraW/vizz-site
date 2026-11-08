@@ -33,13 +33,23 @@ for (const [n, p] of projects.entries()) {
   const s = slug(p), url = `${SITE}/work/${s}/`, [whoLabel, whoName] = who(p);
   const count = p.videos.length;
   const title = `${p.title} — ${p.type} by VIZZ`;
-  const desc = `${p.title}: ${p.type.toLowerCase()}${count > 1 ? ` series of ${count} videos` : ""} for ${whoName}, ${p.year}. Made by VIZZ, AI video creator in Colombo, Sri Lanka.`;
+  // Search wording per type: shown only to Google (page description and video data), never on the page.
+  const KEYWORDS = {
+    "AI commercial": "AI commercial and AI video ad",
+    "Brand film": "brand film and video production",
+    "Event film": "event film and promo video",
+    "Personal film": "AI short film",
+  };
+  const kw = KEYWORDS[p.type] || "video production";
+  const web3 = p.brand ? " for a Web3 brand" : "";
+  const desc = `${p.title}: ${kw}${count > 1 ? ` (${count} videos)` : ""}${web3}, ${p.year}. Made by VIZZ, AI video creator in Colombo, Sri Lanka.`;
+  const longDesc = `${desc} VIZZ makes AI commercials, AI video ads, brand films and event videos for brands in Sri Lanka and worldwide, including Web3 and tech companies.`;
   const ld = {
     "@context": "https://schema.org",
     "@graph": p.videos.map((v, i) => ({
       "@type": "VideoObject",
       name: `${p.title}${count > 1 ? " " + label(p, i) : ""}`,
-      description: desc,
+      description: longDesc,
       thumbnailUrl: abs(v.cover),
       uploadDate: v.date,
       duration: iso(v.seconds),
