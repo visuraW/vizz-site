@@ -21,6 +21,14 @@
 <meta name="twitter:image" content="https://vizzmade.com/og.jpg">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Person", "name": "VIZZ", "url": "https://vizzmade.com/", "jobTitle": "AI video creator", "description": "VIZZ is an AI video creator in Colombo, Sri Lanka, making AI commercials, brand films and event videos for Web3 brands and local businesses.", "address": {"@type": "PostalAddress", "addressLocality": "Colombo", "addressCountry": "LK"}, "knowsAbout": ["AI commercials", "AI video", "brand films", "event videos", "video editing", "motion design"]}</script>
 <meta name="theme-color" content="#ffffff">
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-BFYS0F9NGT"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "G-BFYS0F9NGT");
+</script>
 <link rel="icon" href="favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script src="vimeo-player.min.js" defer></script>
@@ -397,6 +405,7 @@ let current = null;
 
 function play(p, i) {
   current = { p, i };
+  gtag("event", "video_play", { project: p.title, video: label(p, i), video_id: p.videos[i].id });
   cuts.querySelectorAll("button").forEach((x, k) => x.setAttribute("aria-pressed", k === i));
   player.innerHTML = `<iframe src="https://player.vimeo.com/video/${p.videos[i].id}?autoplay=1&title=0&byline=0&portrait=0&dnt=1"
     allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="${p.title} ${label(p, i)}"></iframe>`;
@@ -469,8 +478,13 @@ if (shared) {
 }
 document.getElementById("v-close").addEventListener("click", () => dlg.close());
 
+// Analytics: which contact method visitors tap.
+document.querySelectorAll(".inq a").forEach(a => a.addEventListener("click", () =>
+  gtag("event", "contact_click", { method: a.closest("li").firstElementChild.textContent })));
+
 // Copy buttons next to the email and WhatsApp number.
 document.querySelectorAll(".copy").forEach(b => b.addEventListener("click", async () => {
+  gtag("event", "contact_copy", { method: b.closest("li").firstElementChild.textContent });
   try { await navigator.clipboard.writeText(b.dataset.copy); b.textContent = "Copied"; }
   catch { b.textContent = b.dataset.copy; }
   setTimeout(() => { b.textContent = "Copy"; }, 1500);
