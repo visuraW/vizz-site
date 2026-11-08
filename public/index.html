@@ -69,7 +69,7 @@ nav a:hover{border-color:currentColor}
 /* work grid: rows of mixed widths that always add up to 100% (wide+regular, narrow+narrow+regular) */
 .work{padding:clamp(4px,1vw,20px) var(--side) 0}
 .grid{container-type:inline-size;display:flex;flex-wrap:wrap;margin:0 -6px}
-.tile{flex:0 0 43.716%;padding:6px;text-align:left;min-width:0}
+.tile{display:block;flex:0 0 43.716%;padding:6px;text-align:left;min-width:0}
 .tile.wide{flex-basis:56.284%}
 .tile.narrow{flex-basis:28.142%}
 .tile.square{flex-basis:24.59%}
@@ -187,8 +187,7 @@ dialog::backdrop{background:var(--bg)}
     <h2 id="inq-h">i do videos,<br>got one in mind?</h2>
     <ul>
       <li><span>Email</span><a href="mailto:hi@vizzmade.com">hi@vizzmade.com</a><button class="copy" data-copy="hi@vizzmade.com">Copy</button></li>
-      <!-- WhatsApp row goes here once the real number arrives:
-      <li><span>WhatsApp</span><a href="https://wa.me/94XXXXXXXXX">+94 XX XXX XXXX</a><button class="copy" data-copy="+94XXXXXXXXX">Copy</button></li> -->
+      <li><span>WhatsApp</span><a href="https://wa.me/94713417134">+94 71 341 7134</a><button class="copy" data-copy="+94713417134">Copy</button></li>
       <li><span>Telegram</span><a href="https://t.me/Viz0005">@Viz0005</a><button class="copy" data-copy="@Viz0005">Copy</button></li>
       <li><span>Based in</span><span class="place">Colombo, Sri Lanka</span></li>
     </ul>
@@ -217,9 +216,9 @@ const projects = [
     type: "Brand film",
     year: "2026",
     videos: [
-      { id: "1244720096", cover: "covers/magical-sky-01.webp" },
-      { id: "1244721930", cover: "covers/magical-sky-02.webp" },
-      { id: "1239257105", cover: "covers/magical-sky-03.webp" },
+      { id: "1244720096", cover: "covers/magical-sky-01.webp", date: "2026-11-07", seconds: 43 },
+      { id: "1244721930", cover: "covers/magical-sky-02.webp", date: "2026-11-07", seconds: 34 },
+      { id: "1239257105", cover: "covers/magical-sky-03.webp", date: "2026-10-25", seconds: 39 },
     ],
   },
   {
@@ -227,7 +226,7 @@ const projects = [
     client: "Personal",
     type: "Personal film",
     year: "2026",
-    videos: [{ id: "1237333522", cover: "covers/do-you-feel-it.webp" }],
+    videos: [{ id: "1237333522", cover: "covers/do-you-feel-it.webp", date: "2026-10-19", seconds: 29 }],
   },
   {
     title: "THEMEMBERSONLY",
@@ -235,23 +234,23 @@ const projects = [
     type: "AI commercial",
     year: "2026",
     videos: [
-      { id: "1237331259", cover: "covers/themembersonly-01.webp" },
-      { id: "1237329933", cover: "covers/themembersonly-02.webp" },
+      { id: "1237331259", cover: "covers/themembersonly-01.webp", date: "2026-10-19", seconds: 33 },
+      { id: "1237329933", cover: "covers/themembersonly-02.webp", date: "2026-10-19", seconds: 30 },
     ],
   },  {
     title: "NEWSCHOOLCOMMUNITY",
     client: "NEWSCHOOLCOMMUNITY",
     type: "Brand film",
     year: "2026",
-    videos: [{ id: "1229236000", cover: "covers/newschoolcommunity.webp" }],
+    videos: [{ id: "1229236000", cover: "covers/newschoolcommunity.webp", date: "2026-09-22", seconds: 35 }],
   },  {
     title: "The Arrival",
     client: "Hypecraft Events",
     type: "Brand film",
     year: "2026",
     videos: [
-      { id: "1237327851", cover: "covers/arrival-01.webp" },
-      { id: "1244720415", cover: "covers/arrival-02.webp" },
+      { id: "1237327851", cover: "covers/arrival-01.webp", date: "2026-10-19", seconds: 48 },
+      { id: "1244720415", cover: "covers/arrival-02.webp", date: "2026-11-07", seconds: 24 },
     ],
   },  {
     title: "The Weekend Calling",
@@ -259,9 +258,9 @@ const projects = [
     type: "Brand film",
     year: "2026",
     videos: [
-      { id: "1237334622", cover: "covers/the-weekend-calling-01.webp" },
-      { id: "1244730515", cover: "covers/the-weekend-calling-02.webp" },
-      { id: "1244722631", cover: "covers/the-weekend-calling-03.webp" },
+      { id: "1237334622", cover: "covers/the-weekend-calling-01.webp", date: "2026-10-19", seconds: 29 },
+      { id: "1244730515", cover: "covers/the-weekend-calling-02.webp", date: "2026-11-07", seconds: 14 },
+      { id: "1244722631", cover: "covers/the-weekend-calling-03.webp", date: "2026-11-07", seconds: 17 },
     ],
   },  {
     title: "ILOVEBRUNCH",
@@ -269,37 +268,37 @@ const projects = [
     type: "Brand film",
     year: "2026",
     videos: [
-      { id: "1237339259", cover: "covers/ilovebrunch-01.webp" },
-      { id: "1237337468", cover: "covers/ilovebrunch-02.webp" },
-      { id: "1244753748", cover: "covers/ilovebrunch-03.webp" },
+      { id: "1237339259", cover: "covers/ilovebrunch-01.webp", date: "2026-10-19", seconds: 31 },
+      { id: "1237337468", cover: "covers/ilovebrunch-02.webp", date: "2026-10-19", seconds: 47 },
+      { id: "1244753748", cover: "covers/ilovebrunch-03.webp", date: "2026-11-07", seconds: 64 },
     ],
   },  {
     title: "Base Batches 002",
     brand: "Base Batches 002",
     type: "Event film",
     year: "2025",
-    videos: [{ id: "1139007779", cover: "covers/base-batches-002.webp" }],
+    videos: [{ id: "1139007779", cover: "covers/base-batches-002.webp", date: "2025-11-20", seconds: 57 }],
   },
   {
     title: "Beacon DeFi",
     brand: "Beacon DeFi",
     type: "AI commercial",
     year: "2025",
-    videos: [{ id: "1139157218", cover: "covers/beacon-defi.webp" }],
+    videos: [{ id: "1139157218", cover: "covers/beacon-defi.webp", date: "2025-11-20", seconds: 41 }],
   },
   {
     title: "CapX AI",
     brand: "CapX AI",
     type: "AI commercial",
     year: "2025",
-    videos: [{ id: "1148315290", cover: "covers/capx-ai.webp" }],
+    videos: [{ id: "1148315290", cover: "covers/capx-ai.webp", date: "2025-12-20", seconds: 45 }],
   },
   {
     title: "PistachioFi",
     brand: "PistachioFi",
     type: "AI commercial",
     year: "2025",
-    videos: [{ id: "1140256359", cover: "covers/pistachiofi.webp" }],
+    videos: [{ id: "1140256359", cover: "covers/pistachiofi.webp", date: "2025-11-24", seconds: 45 }],
   },
   {
     title: "Avantis",
@@ -307,31 +306,31 @@ const projects = [
     type: "AI commercial",
     year: "2025",
     videos: [
-      { id: "1148300624", cover: "covers/avantis.webp" },
-      { id: "1150828509", cover: "covers/avantis-02.webp" },
-      { id: "1149698559", cover: "covers/avantis-03.webp" },
-      { id: "1153815940" },
+      { id: "1148300624", cover: "covers/avantis.webp", date: "2025-12-20", seconds: 38 },
+      { id: "1150828509", cover: "covers/avantis-02.webp", date: "2026-01-01", seconds: 57 },
+      { id: "1149698559", cover: "covers/avantis-03.webp", date: "2025-12-27", seconds: 59 },
+      { id: "1153815940", date: "2026-01-12", seconds: 47, cover: "https://i.vimeocdn.com/video/2105907510-6192ecccf81dda4b6b4835f2a114cadf812aa780dbfb2ccf1d65ca17934f3aac-d_1280" },
     ],
   },  {
     title: "Base App",
     brand: "Base App",
     type: "AI commercial",
     year: "2026",
-    videos: [{ id: "1167796975", cover: "covers/base-app.webp" }],
+    videos: [{ id: "1167796975", cover: "covers/base-app.webp", date: "2026-02-24", seconds: 45 }],
   },
   {
     title: "Zora",
     brand: "Zora",
     type: "AI commercial",
     year: "2026",
-    videos: [{ id: "1167803758", cover: "covers/zora.webp" }],
+    videos: [{ id: "1167803758", cover: "covers/zora.webp", date: "2026-02-24", seconds: 28 }],
   },
   {
     title: "Moku Games",
     brand: "Moku Games",
     type: "AI commercial",
     year: "2026",
-    videos: [{ id: "1162632038", cover: "covers/moku-games.webp" }],
+    videos: [{ id: "1162632038", cover: "covers/moku-games.webp", date: "2026-02-06", seconds: 42 }],
   },
 ];
 
@@ -375,7 +374,8 @@ const last = LAST.map(k => all.find(t => t.v && key(t.p, t.i) === k));
 const placed = t => [...first, ...last].some(f => f.p === t.p && f.i === t.i);
 const tiles = [...first, ...all.filter(t => !placed(t)), ...last];
 tiles.forEach(({ p, v, i, size }, n) => {
-  const b = document.createElement("button");
+  // Each tile is a real link to its project page (so Google can follow it); a normal click opens the viewer instead.
+  const b = document.createElement(p.empty ? "div" : "a");
   b.className = ["tile", size || SIZES[n % SIZES.length], p.empty && "empty"].filter(Boolean).join(" ");
   if (p.empty) {
     b.disabled = true;
@@ -393,7 +393,12 @@ tiles.forEach(({ p, v, i, size }, n) => {
       b.firstChild.insertAdjacentHTML("afterbegin",
         `<img src="${src}" ${set} alt="${alt}" onerror="this.remove()" loading="${n < 4 ? "eager" : "lazy"}" decoding="async">`);
     });
-    b.addEventListener("click", () => openProject(p, i, true));
+    b.href = `/work/${slug(p)}/${p.videos.length > 1 ? "#" + pad(i + 1) : ""}`;
+    b.addEventListener("click", e => {
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+      e.preventDefault();
+      openProject(p, i, true);
+    });
   }
   grid.appendChild(b);
 });

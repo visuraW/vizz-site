@@ -13,3 +13,14 @@ and a cover image URL.
 ## Fonts
 
 - Rubik Black (placeholder for the name), Instrument Serif: both SIL Open Font License, served from `public/fonts/`.
+
+## Project pages
+
+Every project also has its own page at `/work/<project>/` (for Google and for sharing one project).
+These pages and `sitemap.xml` are generated from the `projects` list in `public/index.html`.
+After adding or changing a project, run:
+
+    node scripts/build-pages.mjs
+
+then commit the updated `public/work/` folder and `public/sitemap.xml`.
+
