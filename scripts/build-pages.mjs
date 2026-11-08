@@ -124,7 +124,7 @@ ${header}
     ${more.map(o => `<a href="/work/${slug(o)}/"><img src="${small(o.videos[0].cover)}" alt="${esc(o.title)}, ${o.type.toLowerCase()} by VIZZ" loading="lazy"><span>${esc(o.title)}</span></a>`).join("\n    ")}
   </div>
 
-  <p class="contact">i do videos, got one in mind?<br><a href="mailto:hi@vizzmade.com">hi@vizzmade.com</a> · <a href="https://wa.me/94713417134">WhatsApp</a> · <a href="https://t.me/Viz0005">Telegram</a></p>
+  <p class="contact">let's get it made.<br><a href="/#inquiries">Start a project ↗</a> · <a href="mailto:hi@vizzmade.com">hi@vizzmade.com</a> · <a href="https://wa.me/94713417134">WhatsApp</a> · <a href="https://t.me/Viz0005">Telegram</a></p>
 </main>
 <footer><span>© ${new Date().getFullYear()} VIZZ</span><a href="/">All work →</a></footer>
 <script>
