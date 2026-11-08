@@ -109,6 +109,7 @@ footer{display:flex;justify-content:space-between;padding:56px var(--side) 32px;
 /* "Start a project": same thermal-inside-the-letters effect as the VIZZ logo. */
 .cta-art{display:block;width:auto;overflow:visible}
 .nav-cta .cta-art{height:clamp(15px,1.6vw,21px)}
+.nav-cta .two{display:none}
 .nav-cta{transition:transform .25s}
 .nav-cta:hover{transform:translate(2px,-2px)}
 nav{align-items:center}
@@ -163,10 +164,13 @@ dialog::backdrop{background:var(--bg)}
 }
 @media (max-width:600px){
   nav .nav-inq{display:none} /* on phones the CTA already leads to Inquiries */
+  .nav-cta .one{display:none}
+  .nav-cta .two{display:block;height:36px} /* same height as the VIZZ logo */
 }
 @media (max-width:420px){
   nav .nav-work{display:none}
   .name{height:32px}
+  .nav-cta .two{height:32px}
 }
 @media (max-width:760px){
   .tile,.tile.wide,.tile.narrow,.tile.square,.tile.half{flex-basis:100%}
@@ -182,27 +186,34 @@ dialog::backdrop{background:var(--bg)}
 <!-- Shared artwork for "START A PROJECT ↗", drawn with the same thermal filter recipe as the logo. -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <defs>
-    <filter id="thermal-cta" filterUnits="userSpaceOnUse" x="0" y="0" width="2430" height="212" color-interpolation-filters="sRGB">
-      <!-- Calm version of the logo's thermal look: only navy and blues, slow movement. -->
-      <feGaussianBlur in="SourceAlpha" stdDeviation="5" result="blur"/>
+    <filter id="thermal-cta" filterUnits="userSpaceOnUse" x="0" y="0" width="2430" height="420" color-interpolation-filters="sRGB">
+      <!-- Blue-only version of the logo's thermal look: light blue edge, cyan and blue in the middle, navy core. -->
+      <feGaussianBlur in="SourceAlpha" stdDeviation="6" result="blur"/>
       <feColorMatrix in="blur" type="matrix" values="0 0 0 1 0  0 0 0 1 0  0 0 0 1 0  0 0 0 0 1" result="heat"/>
-      <feTurbulence type="fractalNoise" baseFrequency="0.003 0.008" numOctaves="1" seed="3">
-        <animate attributeName="baseFrequency" dur="16s" values="0.003 0.008;0.006 0.005;0.003 0.008" repeatCount="indefinite"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.004 0.009" numOctaves="1" seed="3">
+        <animate attributeName="baseFrequency" dur="12s" values="0.004 0.009;0.008 0.005;0.005 0.011;0.004 0.009" repeatCount="indefinite"/>
       </feTurbulence>
-      <feColorMatrix type="matrix" values="1.4 0 0 0 -.2  1.4 0 0 0 -.2  1.4 0 0 0 -.2  0 0 0 0 1" result="noise"/>
-      <feComposite in="heat" in2="noise" operator="arithmetic" k1=".5" k2=".55" k3="0" k4="0"/>
+      <feColorMatrix type="matrix" values="2.2 0 0 0 -.6  2.2 0 0 0 -.6  2.2 0 0 0 -.6  0 0 0 0 1" result="noise"/>
+      <feComposite in="heat" in2="noise" operator="arithmetic" k1=".85" k2=".3" k3="0" k4="0"/>
       <feComponentTransfer result="color">
-        <feFuncR type="table" tableValues=".55 .35 .16 .1 .06 .04 .03"/>
-        <feFuncG type="table" tableValues=".78 .62 .42 .25 .13 .07 .04"/>
-        <feFuncB type="table" tableValues="1 1 .98 .85 .62 .42 .3"/>
+        <feFuncR type="table" tableValues=".66 .37 .13 .16 .11 .05 .02"/>
+        <feFuncG type="table" tableValues=".85 .71 .78 .48 .25 .12 .04"/>
+        <feFuncB type="table" tableValues="1 1 .94 1 .84 .56 .3"/>
       </feComponentTransfer>
-      <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 5 0" result="mask"/>
+      <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 4 0" result="mask"/>
       <feComposite in="color" in2="mask" operator="in"/>
     </filter>
     <symbol id="cta-art" viewBox="0 0 2430 212">
       <g filter="url(#thermal-cta)">
         <text x="26" y="183" font-family="Name, Arial Black, sans-serif" font-weight="900" font-size="220" letter-spacing="6">START A PROJECT</text>
         <path d="M2262 170L2390 42M2282 42H2390V150" fill="none" stroke="#000" stroke-width="34" stroke-linecap="square"/>
+      </g>
+    </symbol>
+    <!-- Two-line version for phones: START A / PROJECT ↗ -->
+    <symbol id="cta-art-2" viewBox="0 0 1372 410">
+      <g filter="url(#thermal-cta)">
+        <text font-family="Name, Arial Black, sans-serif" font-weight="900" font-size="220" letter-spacing="6"><tspan x="26" y="183">START A</tspan><tspan x="26" y="380">PROJECT</tspan></text>
+        <path d="M1204 372L1332 244M1224 244H1332V352" fill="none" stroke="#000" stroke-width="34" stroke-linecap="square"/>
       </g>
     </symbol>
   </defs>
@@ -239,7 +250,7 @@ dialog::backdrop{background:var(--bg)}
   <nav aria-label="Main">
     <a href="#work" class="nav-work">Work</a>
     <a href="#inquiries" class="nav-inq">Inquiries</a>
-    <a href="#brief" class="nav-cta" aria-label="Start a project"><svg class="cta-art" viewBox="0 0 2430 212" role="img" aria-hidden="true"><use href="#cta-art"/></svg></a>
+    <a href="#brief" class="nav-cta" aria-label="Start a project"><svg class="cta-art one" viewBox="0 0 2430 212" aria-hidden="true"><use href="#cta-art"/></svg><svg class="cta-art two" viewBox="0 0 1372 410" aria-hidden="true"><use href="#cta-art-2"/></svg></a>
   </nav>
 </header>
 

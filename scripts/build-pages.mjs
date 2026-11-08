@@ -86,9 +86,10 @@ img,iframe{display:block;width:100%}
 .top>a{display:block;margin-left:-8px}
 .cta-art{display:block;width:auto;overflow:visible}
 .nav-cta .cta-art{height:clamp(15px,1.6vw,21px)}
+.nav-cta .two{display:none}
 nav{align-items:center}
-@media (max-width:600px){nav .nav-inq{display:none}}
-@media (max-width:420px){nav .nav-work{display:none}.name{height:32px}}
+@media (max-width:600px){nav .nav-inq{display:none}.nav-cta .one{display:none}.nav-cta .two{display:block;height:36px}}
+@media (max-width:420px){nav .nav-work{display:none}.name{height:32px}.nav-cta .two{height:32px}}
 .name{display:block;height:clamp(36px,3.6vw,46px);width:auto}
 .name text{font:900 220px Name,Arial Black,sans-serif;letter-spacing:-4px}
 nav{display:flex;gap:clamp(18px,2.4vw,32px);font-size:clamp(21px,2vw,27px)}
