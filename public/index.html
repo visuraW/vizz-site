@@ -109,20 +109,20 @@ footer{display:flex;justify-content:space-between;padding:56px var(--side) 32px;
 /* "Start a project": same thermal-inside-the-letters effect as the VIZZ logo. */
 .cta-art{display:block;width:auto;overflow:visible}
 .nav-cta .cta-art{height:clamp(15px,1.6vw,21px)}
-.inq-cta{display:inline-block;margin-bottom:18px}
-.inq-cta .cta-art{height:clamp(22px,2.6vw,34px)}
-.nav-cta,.inq-cta{transition:transform .25s}
-.nav-cta:hover,.inq-cta:hover{transform:translate(2px,-2px)}
+.nav-cta{transition:transform .25s}
+.nav-cta:hover{transform:translate(2px,-2px)}
 nav{align-items:center}
 
 /* Project brief form */
 .inq-left ul{margin-top:32px}
+.intro{margin:0 0 clamp(10px,1.4vw,18px);font-size:clamp(18px,1.6vw,22px);color:var(--muted)}
 .brief{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px 24px;align-content:start}
 .brief .full{grid-column:1 / -1}
 .brief label{display:grid;gap:6px;font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 .brief input,.brief select,.brief textarea{font:inherit;font-size:20px;letter-spacing:0;text-transform:none;color:var(--ink);background:none;border:0;border-bottom:1px solid #cfcfcf;border-radius:0;padding:6px 0;width:100%;outline:none;-webkit-appearance:none;appearance:none}
 .brief select{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23111' stroke-width='1.5'/%3E%3C/svg%3E") right 4px center/12px no-repeat;padding-right:24px;cursor:pointer}
 .brief textarea{resize:vertical;min-height:110px}
+.brief input,.brief select,.brief textarea{scroll-margin-top:140px}
 .brief input:focus,.brief select:focus,.brief textarea:focus{border-color:var(--ink)}
 .brief .trap{position:absolute;left:-9999px}
 .brief button{grid-column:1 / -1;display:flex;justify-content:space-between;align-items:center;background:var(--ink);color:#fff;padding:18px 22px;font-size:20px;letter-spacing:.04em}
@@ -183,19 +183,20 @@ dialog::backdrop{background:var(--bg)}
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <defs>
     <filter id="thermal-cta" filterUnits="userSpaceOnUse" x="0" y="0" width="2430" height="212" color-interpolation-filters="sRGB">
-      <feGaussianBlur in="SourceAlpha" stdDeviation="7" result="blur"/>
+      <!-- Calm version of the logo's thermal look: only navy and blues, slow movement. -->
+      <feGaussianBlur in="SourceAlpha" stdDeviation="5" result="blur"/>
       <feColorMatrix in="blur" type="matrix" values="0 0 0 1 0  0 0 0 1 0  0 0 0 1 0  0 0 0 0 1" result="heat"/>
-      <feTurbulence type="fractalNoise" baseFrequency="0.004 0.009" numOctaves="1" seed="3">
-        <animate attributeName="baseFrequency" dur="9s" values="0.004 0.009;0.008 0.005;0.005 0.012;0.004 0.009" repeatCount="indefinite"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.003 0.008" numOctaves="1" seed="3">
+        <animate attributeName="baseFrequency" dur="16s" values="0.003 0.008;0.006 0.005;0.003 0.008" repeatCount="indefinite"/>
       </feTurbulence>
-      <feColorMatrix type="matrix" values="2.2 0 0 0 -.6  2.2 0 0 0 -.6  2.2 0 0 0 -.6  0 0 0 0 1" result="noise"/>
-      <feComposite in="heat" in2="noise" operator="arithmetic" k1=".85" k2=".3" k3="0" k4="0"/>
+      <feColorMatrix type="matrix" values="1.4 0 0 0 -.2  1.4 0 0 0 -.2  1.4 0 0 0 -.2  0 0 0 0 1" result="noise"/>
+      <feComposite in="heat" in2="noise" operator="arithmetic" k1=".5" k2=".55" k3="0" k4="0"/>
       <feComponentTransfer result="color">
-        <feFuncR type="table" tableValues="1 1 1 1 1 .275 .133 .165 .106 .051 .024"/>
-        <feFuncG type="table" tableValues=".604 .31 .353 .624 .882 .878 .78 .482 .247 .122 .043"/>
-        <feFuncB type="table" tableValues=".835 .639 .212 .11 .302 .478 .941 1 .839 .561 .302"/>
+        <feFuncR type="table" tableValues=".55 .35 .16 .1 .06 .04 .03"/>
+        <feFuncG type="table" tableValues=".78 .62 .42 .25 .13 .07 .04"/>
+        <feFuncB type="table" tableValues="1 1 .98 .85 .62 .42 .3"/>
       </feComponentTransfer>
-      <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 4 0" result="mask"/>
+      <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 5 0" result="mask"/>
       <feComposite in="color" in2="mask" operator="in"/>
     </filter>
     <symbol id="cta-art" viewBox="0 0 2430 212">
@@ -245,12 +246,12 @@ dialog::backdrop{background:var(--bg)}
 <main>
   <h1 class="sr-only">VIZZ — AI video creator in Colombo, Sri Lanka: AI commercials, brand films and event videos</h1>
   <section class="work" id="work" aria-label="Work">
+    <p class="intro">AI commercials and brand films</p>
     <div class="grid" id="grid"></div>
   </section>
 
   <section class="inq" id="inquiries" aria-labelledby="inq-h">
     <div class="inq-left">
-    <a href="#brief" class="inq-cta" aria-label="Start a project"><svg class="cta-art" viewBox="0 0 2430 212" aria-hidden="true"><use href="#cta-art"/></svg></a>
     <h2 id="inq-h">let's get it made.</h2>
     <ul>
       <li><span>Email</span><a href="mailto:hi@vizzmade.com">hi@vizzmade.com</a><button class="copy" data-copy="hi@vizzmade.com">Copy</button></li>
